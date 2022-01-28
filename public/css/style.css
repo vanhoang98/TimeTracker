@@ -1,0 +1,115 @@
+/* ------------ colors ------------ */
+@font-face {
+  font-family: "Noto Sans JP, sans-serif";
+  src: url(../fonts/NotoSansCJKjp-Regular.ttf);
+}
+/* mobile */
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.l-wrapper {
+  position: relative;
+}
+.l-wrapper::after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.l-main {
+  width: 74%;
+  float: right;
+}
+@media (min-width: 1441px) {
+  .l-main {
+    width: 80%;
+  }
+}
+.l-main .l-nav-action {
+  height: 50px;
+  display: flex;
+  border-bottom: 1px solid #e8e8ec;
+}
+.l-main .l-main-calendar-picker .calendar-time-col .time-wrapper .calendar-time-cell {
+  padding: 0 0.7143rem;
+  width: 80px;
+  height: 140px;
+  color: #999;
+  border-bottom: 1px solid #c6d2d9;
+}
+.l-main .l-main-calendar-picker .calendar-header {
+  display: flex;
+}
+.l-main .l-main-calendar-picker .calendar-header .calendar-time-col {
+  width: 80px;
+  height: 4.2858rem;
+  background: #e4eaee;
+  border-bottom: 1px solid #c6d2d9;
+}
+.l-main .l-main-calendar-picker .calendar-header .calendar-header-cell {
+  width: calc(14.28571% - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4.2858rem;
+  padding: 0 0.7143rem;
+  background: #e4eaee;
+  border-bottom: 1px solid #c6d2d9;
+  border-left: 1px solid #c6d2d9;
+  flex: 1 1 auto;
+}
+.l-main .l-main-calendar-picker .calendar-body {
+  overflow-y: scroll;
+  height: calc(100vh - 192px);
+}
+.l-main .l-main-calendar-picker .calendar-body .calendar-body-wrapper {
+  display: flex;
+  width: calc(100% + 17px);
+}
+.l-main .l-main-calendar-picker .calendar-body .calendar-entry-col {
+  width: calc(14.28571% - 80px);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.l-main .l-main-calendar-picker .calendar-entry-cell {
+  height: 140px;
+  padding: 0 0.35715rem;
+  border-bottom: 1px solid #c6d2d9;
+  border-left: 1px solid #c6d2d9;
+}
+.l-main .l-main-calendar-picker .calendar-entry-cell.cell-bg-grey {
+  background-color: rgba(228, 234, 238, 0.25);
+}
+.l-main .l-main-calendar-picker .drag-new-entry {
+  position: relative;
+}
+.l-main .l-main-calendar-picker .daily-time-entries .calendar-entries-wrapper {
+  position: absolute;
+  top: 0;
+  right: 6%;
+  bottom: 0;
+  display: flex;
+  width: 94%;
+  height: 100%;
+}
+.l-main .l-main-calendar-picker .daily-time-entries .calendar-entry {
+  position: absolute;
+  z-index: 998;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  background: #FBCCDC;
+  text-align: left;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  transition: all 0.2s ease-in-out;
+}
+.l-main .l-main-calendar-picker .daily-time-entries .calendar-entry span {
+  color: #B23D65;
+}
