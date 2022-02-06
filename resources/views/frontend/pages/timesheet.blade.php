@@ -107,18 +107,18 @@
         </ul>
     </div>
 
-    <div class="l-main">
+    {{-- <div class="l-main">
         <div class="l-main__container">
             <div class="l-nav-action">
-            <div class="datepicker-range">
+                <div class="datepicker-range">
 
-            </div>
-            <div class="timepicker-range">
+                </div>
+                <div class="timepicker-range">
 
-            </div>
-            <div class="list-action-outline">
+                </div>
+                <div class="list-action-outline">
 
-            </div>
+                </div>
             </div>
             <div class="l-main-calendar-picker">
                 <div class="calendar-header">
@@ -273,5 +273,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+
+
 </div>
