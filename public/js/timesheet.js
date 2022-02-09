@@ -1,5 +1,5 @@
 $( function() {
-    $(".choosed-task").resizable({handles: 'n, s'});
+    taskCommon();
 
     $(".draggable").draggable({
         helper: "clone",
@@ -13,24 +13,31 @@ $( function() {
             var $newdiv = $('<div class="calendar-entry" style="background-color: pink;color: darkred;border-radius: 1.25rem;"></div>');
             $newdiv.append($newElement).addClass("choosed-task");
             $(this).append($newdiv);
-            $(".choosed-task").resizable({handles: 'n, s'});
-            $(".calendar-entry").bind("contextmenu", function (event) {
-                event.preventDefault();
-                $(".custom-menu").finish().toggle(100).css({
-                    top: event.pageY -65,
-                    left: event.pageX
-                });
-            });
-
-            $(document).bind("click", function(e) {
-                $('.custom-menu').hide();
-            });
-
-
+            taskCommon();
         }
     });
 
-
-
-
 } );
+
+
+function taskCommon() {
+    $(".choosed-task").resizable({handles: 'n, s'});
+
+    $(".calendar-entry").bind("contextmenu", function (event) {
+        event.preventDefault();
+        $(".custom-menu").finish().slideDown('fast').css({
+            top: event.pageY -65,
+            left: event.pageX
+        });
+    });
+
+    $(document).bind("click", function(e) {
+        $('.custom-menu').hide();
+    });
+
+    $('.custom-menu li').mouseenter(function() {
+        $(this).children('ul').stop().slideDown('fast')
+    }).mouseleave(function() {
+        $(this).children('ul').stop().slideUp('fast')
+    });
+}

@@ -1,8 +1,8 @@
 .custom-menu {
     display: none;
-    z-index: 1000;
+    z-index: 10;
     position: absolute;
-    overflow: hidden;
+    overflow: visible;
     border: 1px solid #CCC;
     white-space: nowrap;
     font-family: sans-serif;
@@ -10,7 +10,7 @@
     color: #333;
     border-radius: 5px;
     padding: 0;
-    width: 145px;
+    width: 185px;
 }
 
 /* Each of the items in the list */
@@ -24,4 +24,30 @@
 
 .custom-menu li:hover {
     background-color: #DEF;
+}
+
+.icon-itemMenu {
+    font-size: 18px !important;
+    padding-right: 5px;
+}
+
+.arrow-right {
+    padding-left: 65px;
+}
+
+.process-subMenu {
+    display: none;
+    z-index: 12;
+    position: absolute;
+    left: 183px;
+    top: 39px;
+    overflow: visible;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+    padding: 0;
+    width: 110px;
 }
