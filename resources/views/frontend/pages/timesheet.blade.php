@@ -37,8 +37,8 @@
             <li class="l-sidebar__item">
                 <div class="item-head item-dropdown">マイワークアイテム</div>
                 <ul class="item-body item-root">
-                    <li class="text-ellipsis active-title">タスク①</li>
-                    <li class="text-ellipsis">タスク②</li>
+                    <li class="text-ellipsis draggable">タスク①</li>
+                    <li class="text-ellipsis draggable">タスク②</li>
                 </ul>
             </li>
 
@@ -76,27 +76,27 @@
 
                     <ul class="item-tree">
                         <li>
-                            <div class="item-dropdown active-title">プロジェクト①</div>
+                            <div class="item-dropdown active-title draggable">プロジェクト①</div>
                             <ul>
                                 <li class="f-size-small">
-                                    <div class="item-droplist">タスク①</div>
+                                    <div class="item-droplist draggable">タスク①</div>
                                     <ul>
-                                        <li>サブタスク①</li>
-                                        <li>サブタスク②</li>
+                                        <li class="draggable">サブタスク①</li>
+                                        <li class="draggable">サブタスク②</li>
                                     </ul>
                                 </li>
 
                                 <li class="f-size-large">
-                                    <div class="item-droplist">タスク②</div>
+                                    <div class="item-droplist draggable">タスク②</div>
                                     <ul>
                                         <li>
-                                            <div class="item-droplist">サブタスク①</div>
+                                            <div class="item-droplist draggable">サブタスク①</div>
                                             <ul>
-                                                <li>サブタスク①</li>
-                                                <li>サブタスク②</li>
+                                                <li class="draggable">サブタスク①</li>
+                                                <li class="draggable">サブタスク②</li>
                                             </ul>
                                         </li>
-                                        <li>サブタスク②</li>
+                                        <li class="draggable">サブタスク②</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -107,7 +107,7 @@
         </ul>
     </div>
 
-    {{-- <div class="l-main">
+    <div class="l-main">
         <div class="l-main__container">
             <div class="l-nav-action">
                 <div class="datepicker-range">
@@ -174,13 +174,6 @@
 
                         <div class="calendar-entry-col">
                             <div class="drag-new-entry">
-                                <div class="daily-time-entries">
-                                    <div class="calendar-entries-wrapper">
-                                        <div class="calendar-entry" style="height: 90px;">
-                                            <span>コープ葬祭では搬送料金もプランによっては料金に含まれています。</span>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="weekly-grid">
                                     <div class="calendar-entry-cell"></div>
                                     <div class="calendar-entry-cell"></div>
@@ -270,10 +263,16 @@
                             </div>
                         </div>
                     </div>
+                    <ul class='custom-menu'>
+                        <li data-action='first'>削除</li>
+                        <hr>
+                        <li data-action='second'>工程分類</li>
+                        <li data-action='third'>作業分類</li>
+                        <li data-action='third'>詳細表示</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div> --}}
-
+    </div>
 
 </div>
