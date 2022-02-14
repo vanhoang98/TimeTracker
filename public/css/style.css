@@ -114,7 +114,8 @@ body {
 .l-main .l-main-calendar-picker .daily-time-entries .calendar-entry span {
   color: #B23D65;
 }
-#calendar {
-    max-width: 1100px;
-    margin: 40px auto;
+
+.day {
+  color: #7c8a99;
+  font-size: 20px;
 }

@@ -113,21 +113,21 @@
             <div class="datepicker-range">
                 <ul>
                     <li class="manual-mode icon-cmn">
-                        <a href="">
+                        <p href="" class="pre-week">
                             <img src="{{ asset('images/icon-prev.png') }}" alt="">
-                        </a>
+                        </p>
                     </li>
                     <li class="manual-mode">
                         <a href="">
-                            <span>
-                                {{ $start->format('m/d') }} ~ {{ $end->format('m/d') }}
-                            </span>
+                            <span id = 'firstday'></span>
+                            <span> ~ </span>
+                            <span id = 'lastday'></span>
                         </a>
                     </li>
                     <li class="manual-mode icon-cmn">
-                        <a href="">
+                        <p href="" class="next-week">
                             <img src="{{ asset('images/icon-next.png') }}" alt="">
-                        </a>
+                        </p>
                     </li>
                 </ul>
             </div>
@@ -141,41 +141,6 @@
             <div class="l-main-calendar-picker">
                 <div class="calendar-header">
                     <div class="calendar-time-col"></div>
-                    @foreach ($days as $day)
-                        <div class="calendar-header-cell" @if ($day->day === Carbon\Carbon::now()->format('m/d'))
-                            style="background-color: #c1ddf1"
-                        @endif>
-                            <div class="day">
-                                <b style="color: #7c8a99; font-size: 20px">
-                                    {{ $day->day }}
-                                </b>
-                                <b style="color: #7c8a99; font-size: 20px">
-                                    @switch($day->name)
-                                        @case('Monday')
-                                            (月)
-                                            @break
-                                        @case('Tuesday')
-                                            (火)
-                                            @break
-                                        @case('Wednesday')
-                                            (水)
-                                            @break
-                                        @case('Thursday')
-                                            (木)
-                                            @break
-                                        @case('Friday')
-                                            (金)
-                                            @break
-                                        @case('Saturday')
-                                            (土)
-                                            @break
-                                        @default
-                                            (日)
-                                    @endswitch
-                                </b>
-                            </div>
-                        </div>
-                    @endforeach
                 </div>
 
                 <div class="calendar-body">
@@ -251,5 +216,127 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<script>
+    var dt = new Date();
+    var currentWeekDay = dt.getDay();
+    var lessDays = currentWeekDay == 0 ? 6 : currentWeekDay - 1;
+
+    list_days = [];
+    for (let i = 0; i < 7; i++) {
+        var x = {};
+        const name = ["月", "火", "水", "木", "金", "土", "日"];
+        date = new Date(new Date(dt).setDate(dt.getDate() - lessDays + i));
+        x.date = date;
+        x.month = date.getMonth() + 1;
+        x.day = date.getDate();
+        x.dayName = name[i];
+        list_days.push(x);
+    }
+
+    document.getElementById("firstday").innerHTML = list_days[0].month + '/' + list_days[0].day;
+    document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
+
+    for (let i of list_days) {
+        if (i.day === dt.getDate()) {
+            $('.calendar-header').append(`
+                <div class="calendar-header-cell" style="background-color: #c1ddf1">
+                    <div class="day">
+                        <b>${i.month}</b>
+                        <b>/</b>
+                        <b>${i.day}</b>
+                        <b>(${i.dayName})</b>
+                    </div>
+                </div>
+            `)
+        } else {
+            $('.calendar-header').append(`
+                <div class="calendar-header-cell">
+                    <div class="day">
+                        <b>${i.month}</b>
+                        <b>/</b>
+                        <b>${i.day}</b>
+                        <b>(${i.dayName})</b>
+                    </div>
+                </div>
+            `)
+        }
+    }
+
+    $('.next-week').click(function() {
+        for (let i of list_days) {
+            nextWeek = i.date.setDate(i.date.getDate() + 7);
+            date = new Date(nextWeek);
+            i.month = date.getMonth() + 1;
+            i.day = date.getDate();
+        }
+        $(".calendar-header-cell").remove();
+        document.getElementById("firstday").innerHTML = list_days[0].month + '/' + list_days[0].day;
+        document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
+
+        for (let i of list_days) {
+            if (i.day === dt.getDate()) {
+                $('.calendar-header').append(`
+                    <div class="calendar-header-cell" style="background-color: #c1ddf1">
+                        <div class="day">
+                            <b>${i.month}</b>
+                            <b>/</b>
+                            <b>${i.day}</b>
+                            <b>(${i.dayName})</b>
+                        </div>
+                    </div>
+                `)
+            } else {
+                $('.calendar-header').append(`
+                    <div class="calendar-header-cell">
+                        <div class="day">
+                            <b>${i.month}</b>
+                            <b>/</b>
+                            <b>${i.day}</b>
+                            <b>(${i.dayName})</b>
+                        </div>
+                    </div>
+                `)
+            }
+        }
+    })
+
+    $('.pre-week').click(function() {
+        for (let i of list_days) {
+            lastWeek = i.date.setDate(i.date.getDate() - 7);
+            date = new Date(lastWeek);
+            i.month = date.getMonth() + 1;
+            i.day = date.getDate();
+        }
+        $(".calendar-header-cell").remove();
+        document.getElementById("firstday").innerHTML = list_days[0].month + '/' + list_days[0].day;
+        document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
+
+        for (let i of list_days) {
+            if (i.day === dt.getDate()) {
+                $('.calendar-header').append(`
+                    <div class="calendar-header-cell" style="background-color: #c1ddf1">
+                        <div class="day">
+                            <b>${i.month}</b>
+                            <b>/</b>
+                            <b>${i.day}</b>
+                            <b>(${i.dayName})</b>
+                        </div>
+                    </div>
+                `)
+            } else {
+                $('.calendar-header').append(`
+                    <div class="calendar-header-cell">
+                        <div class="day">
+                            <b>${i.month}</b>
+                            <b>/</b>
+                            <b>${i.day}</b>
+                            <b>(${i.dayName})</b>
+                        </div>
+                    </div>
+                `)
+            }
+        }
+    })
+</script>
