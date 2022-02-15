@@ -11,7 +11,7 @@ $( function() {
         accept: '.draggable',
         drop: function(event, ui) {
             var $newElement = $(ui.draggable.clone());
-            var $newdiv = $('<div class="calendar-entry" style="background-color: pink;color: darkred;border-radius: 1.25rem;"></div>');
+            var $newdiv = $('<div class="calendar-entry"></div>');
             $newdiv.append($newElement).addClass("choosed-task");
             $(this).append($newdiv);
             taskCommon();
@@ -22,7 +22,10 @@ $( function() {
 
 
 function taskCommon() {
-    $(".choosed-task").resizable({handles: 'n, s'});
+    $(".choosed-task").resizable(
+        { handles: 'n, s' },
+        { grid: [ 0, 100 ]},
+    );
 
     $(".calendar-entry").bind("contextmenu", function (event) {
         event.preventDefault();

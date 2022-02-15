@@ -1,3 +1,12 @@
+.calendar-entry {
+    z-index: 5;
+    height: 98px;
+    background-color: pink;
+    color: darkred;
+    border-radius: 1.25rem;
+    list-style-type: none;
+}
+
 .custom-menu {
     display: none;
     z-index: 10;
@@ -37,7 +46,7 @@
 
 .process-subMenu {
     display: none;
-    z-index: 12;
+    z-index: 15;
     position: absolute;
     left: 183px;
     top: 39px;
