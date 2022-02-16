@@ -19,6 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->unsignedTinyInteger('role_id');
+            $table->dateTime('date_of_birth');
             $table->tinyInteger('sex');
             $table->string('address');
             $table->string('department');

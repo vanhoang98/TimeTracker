@@ -18,7 +18,7 @@ class Employee extends Model
         'address',
         'department',
         'breaktime_start',
-        'breaktime_finsh'       
+        'breaktime_finsh'
     ];
 
     protected $hidden = [
@@ -30,8 +30,15 @@ class Employee extends Model
         return $this->belongsTo(Role::class);
     }
 
-    public function employeeTask()
+    public function tasks()
     {
-        return $this->belongsTo(EmployeeTask::class);
+        return $this->belongsToMany(Task::class, 'employee_task','employee_id','task_id')
+            ->withPivot('id', 'working_time_start', 'working_time_finish','detail');
     }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
+
 }
