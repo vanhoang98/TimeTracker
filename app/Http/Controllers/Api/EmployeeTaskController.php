@@ -66,7 +66,6 @@ class EmployeeTaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $request;
         $employee_task = DB::table('employee_task')
             ->where('id',$id)
             ->update([
