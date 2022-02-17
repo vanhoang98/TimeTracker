@@ -1,12 +1,21 @@
-$( function() {
-
-
+$(document).ready(function () {
     switch_next_pre_week();
     taskCommon();
+    fetchstudent();
 
     $(".draggable").draggable({
         helper: "clone",
-        revert: "true",
+        revert: "invalid",
+        stop: function(){
+            $(this).draggable('option','revert','invalid');
+        }
+    });
+
+    $(".draggable").droppable({
+        greedy: true,
+        drop: function(event,ui){
+            ui.draggable.draggable('option','revert',true);
+        }
     });
 
     $(".calendar-entry-cell").droppable({
@@ -19,8 +28,23 @@ $( function() {
             taskCommon();
         }
     });
-} );
 
+});
+
+function fetchstudent() {
+    $.ajax({
+        type: "GET",
+        url: "/api/employee/task",
+        dataType: "json",
+        success: function (response) {
+            $.each(response.data, function(index, item) {
+                console.log(item.working_time_start);
+
+            });
+
+        }
+    });
+}
 
 function taskCommon() {
 
@@ -28,15 +52,7 @@ function taskCommon() {
     $(".choosed-task").resizable({
         handles: "n, s",
         grid: [ 0, 100 ],
-        resize: function(event, ui){
-            var $targetResize = $(this);
-            if ($targetResize.position().top + $targetResize.height() > $targetPos.position().top) {
-                $(this).resizable({ maxHeight: $targetResize.height() });
-            }
-        }
-
     });
-
 
     $(".calendar-entry").bind("contextmenu", function (event) {
         event.preventDefault();
