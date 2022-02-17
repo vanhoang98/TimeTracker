@@ -68,9 +68,9 @@ function switch_next_pre_week() {
     document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
 
     for (let i of list_days) {
-        if (i.day === dt.getDate()) {
+        if (i.day === dt.getDate() && i.month === dt.getMonth() + 1) {
             $('.calendar-header').append(`
-                <div class="calendar-header-cell" style="background-color: #c1ddf1">
+                <div class="calendar-header-cell" style="background-color: #c1ddf1" id=${i.day}>
                     <div class="day">
                         <b>${i.month}</b>
                         <b>/</b>
@@ -81,7 +81,7 @@ function switch_next_pre_week() {
             `)
         } else {
             $('.calendar-header').append(`
-                <div class="calendar-header-cell">
+                <div class="calendar-header-cell" id=${i.day}>
                     <div class="day">
                         <b>${i.month}</b>
                         <b>/</b>
@@ -91,6 +91,21 @@ function switch_next_pre_week() {
                 </div>
             `)
         }
+
+        text = ''
+        for (let a = 0; a < 24; a++) {
+            text += `<div class="calendar-entry-cell" data-month = ${i.month} data-day = ${i.day} data-start = ${a} data-finish = ${a + 1}></div>`
+        }
+
+        $('.calendar-body-wrapper').append(`
+            <div class="calendar-entry-col">
+                <div class="drag-new-entry">
+                    <div class="weekly-grid">
+                        ${text}
+                    </div>
+                </div>
+            </div>
+        `)
     }
 
     $('.next-week').click(function() {
@@ -105,9 +120,9 @@ function switch_next_pre_week() {
         document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
 
         for (let i of list_days) {
-            if (i.day === dt.getDate()) {
+            if (i.day === dt.getDate() && i.month === dt.getMonth() + 1) {
                 $('.calendar-header').append(`
-                    <div class="calendar-header-cell" style="background-color: #c1ddf1">
+                    <div class="calendar-header-cell" style="background-color: #c1ddf1" id${i.day}>
                         <div class="day">
                             <b>${i.month}</b>
                             <b>/</b>
@@ -118,7 +133,7 @@ function switch_next_pre_week() {
                 `)
             } else {
                 $('.calendar-header').append(`
-                    <div class="calendar-header-cell">
+                    <div class="calendar-header-cell" id=${i.day}>
                         <div class="day">
                             <b>${i.month}</b>
                             <b>/</b>
@@ -143,9 +158,9 @@ function switch_next_pre_week() {
         document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
 
         for (let i of list_days) {
-            if (i.day === dt.getDate()) {
+            if (i.day === dt.getDate() && i.month === dt.getMonth() + 1) {
                 $('.calendar-header').append(`
-                    <div class="calendar-header-cell" style="background-color: #c1ddf1">
+                    <div class="calendar-header-cell" style="background-color: #c1ddf1" id=${i.day}>
                         <div class="day">
                             <b>${i.month}</b>
                             <b>/</b>
@@ -156,7 +171,7 @@ function switch_next_pre_week() {
                 `)
             } else {
                 $('.calendar-header').append(`
-                    <div class="calendar-header-cell">
+                    <div class="calendar-header-cell" id=${i.day}>
                         <div class="day">
                             <b>${i.month}</b>
                             <b>/</b>

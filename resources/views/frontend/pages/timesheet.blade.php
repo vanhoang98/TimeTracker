@@ -110,29 +110,44 @@
     <div class="l-main">
         <div class="l-main__container">
             <div class="l-nav-action">
-            <div class="datepicker-range">
-                <ul>
-                    <li class="manual-mode icon-cmn">
-                        <p href="" class="pre-week">
-                            <img src="{{ asset('images/icon-prev.png') }}" alt="">
-                        </p>
-                    </li>
-                    <li class="manual-mode">
-                        <a href="">
-                            <span id = 'firstday'></span>
-                            <span> ~ </span>
-                            <span id = 'lastday'></span>
-                        </a>
-                    </li>
-                    <li class="manual-mode icon-cmn">
-                        <p href="" class="next-week">
-                            <img src="{{ asset('images/icon-next.png') }}" alt="">
-                        </p>
-                    </li>
-                </ul>
-            </div>
-            <div class="timepicker-range">
-
+                <div class="datepicker-range">
+                    <ul>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="pre-week">
+                                <img src="{{ asset('images/icon-prev.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode">
+                            <a href="">
+                                <span id = 'firstday'></span>
+                                <span> ~ </span>
+                                <span id = 'lastday'></span>
+                            </a>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="next-week">
+                                <img src="{{ asset('images/icon-next.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="">
+                                <img src="{{ asset('images/icon-calendar.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="day-calendar">
+                                <img src="{{ asset('images/icon-day.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="">
+                                <img src="{{ asset('images/icon-week.png') }}" alt="">
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="timepicker-range">
+                  
                 </div>
                 <div class="list-action-outline">
 
@@ -147,29 +162,16 @@
                     <div class="calendar-body-wrapper">
                         <div class="calendar-time-col">
                             <div class="time-wrapper">
-                                @foreach (range(1, 9) as $hour)
+                                @foreach (range(0, 9) as $hour)
                                     <div class="calendar-time-cell"><span style="float: right; font-size: 20px">0{{ $hour }}:00</span></div>
                                 @endforeach
-                                @foreach (range(10, 24) as $hour)
+                                @foreach (range(10, 23) as $hour)
                                     <div class="calendar-time-cell"><span style="float: right; font-size: 20px">{{ $hour }}:00</span></div>
                                 @endforeach
                             </div>
                         </div>
 
-                        {{-- <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                </div>
-                            </div>
-                        </div> --}}
-
-                        @foreach (range(1, 5) as $item)
+                        {{-- @foreach (range(1, 5) as $item)
                             <div class="calendar-entry-col">
                                 <div class="drag-new-entry">
                                     <div class="weekly-grid">
@@ -191,7 +193,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @endforeach --}}
                     </div>
                     <ul class='custom-menu'>
                         <li><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
@@ -217,3 +219,41 @@
         </div>
     </div>
 </div>
+
+<script>
+    $('.day-calendar').click(function() {
+        today = new Date();
+        if ($('.calendar-header-cell').length == 7) {
+            days = document.getElementsByClassName("calendar-header-cell");
+            for (let i = 0; i < days.length; i++) {
+                // if (parseInt($('.calendar-header-cell').attr('id')) != today.getDate()) {
+                //     days.item(i).remove();
+                // }
+                console.log(days.item(i))
+            }
+            // $(".calendar-header-cell").remove();
+            // $(".calendar-entry-col").remove();
+            // $('.calendar-header').append(`
+            //     <div class="calendar-header-cell" style="background-color: #c1ddf1">
+            //         <div class="day">
+            //             <b>${today.getMonth() + 1}</b>
+            //             <b>/</b>
+            //             <b>${today.getDate()}</b>
+            //         </div>
+            //     </div>
+            // `)
+            // $('.calendar-body-wrapper').append(`
+            //     <div class="calendar-entry-col">
+            //         <div class="drag-new-entry">
+            //             <div class="weekly-grid">
+            //                 <div class="calendar-entry-cell"></div>
+            //                 <div class="calendar-entry-cell"></div>
+            //                 <div class="calendar-entry-cell"></div>
+            //                 <div class="calendar-entry-cell"></div>
+            //             </div>
+            //         </div>
+            //     </div>
+            // `)
+        }
+    })
+</script>
