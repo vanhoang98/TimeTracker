@@ -1,4 +1,6 @@
 $( function() {
+
+
     switch_next_pre_week();
     taskCommon();
 
@@ -17,15 +19,24 @@ $( function() {
             taskCommon();
         }
     });
-
 } );
 
 
 function taskCommon() {
-    $(".choosed-task").resizable(
-        { handles: 'n, s' },
-        { grid: [ 0, 100 ]},
-    );
+
+    var $targetPos = $(".choosed-task").not(this);
+    $(".choosed-task").resizable({
+        handles: "n, s",
+        grid: [ 0, 100 ],
+        resize: function(event, ui){
+            var $targetResize = $(this);
+            if ($targetResize.position().top + $targetResize.height() > $targetPos.position().top) {
+                $(this).resizable({ maxHeight: $targetResize.height() });
+            }
+        }
+
+    });
+
 
     $(".calendar-entry").bind("contextmenu", function (event) {
         event.preventDefault();

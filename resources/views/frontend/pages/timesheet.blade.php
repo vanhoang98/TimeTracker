@@ -37,8 +37,8 @@
             <li class="l-sidebar__item">
                 <div class="item-head item-dropdown">マイワークアイテム</div>
                 <ul class="item-body item-root">
-                    <li class="text-ellipsis draggable">タスク①</li>
-                    <li class="text-ellipsis draggable">タスク②</li>
+                    <li class="text-ellipsis draggable">担当中のタスク1</li>
+                    <li class="text-ellipsis draggable">担当中のタスク2</li>
                 </ul>
             </li>
 
@@ -76,27 +76,27 @@
 
                     <ul class="item-tree">
                         <li>
-                            <div class="item-dropdown active-title draggable">プロジェクト①</div>
+                            <div class="item-dropdown active-title draggable">プロジェクト1</div>
                             <ul>
                                 <li class="f-size-small">
-                                    <div class="item-droplist draggable">タスク①</div>
+                                    <div class="item-droplist draggable">タスク1</div>
                                     <ul>
-                                        <li class="draggable">サブタスク①</li>
-                                        <li class="draggable">サブタスク②</li>
+                                        <li class="draggable">サブタスク1.1</li>
+                                        <li class="draggable">サブタスク1.2</li>
                                     </ul>
                                 </li>
 
                                 <li class="f-size-large">
-                                    <div class="item-droplist draggable">タスク②</div>
+                                    <div class="item-droplist draggable">タスク2</div>
                                     <ul>
                                         <li>
-                                            <div class="item-droplist draggable">サブタスク①</div>
+                                            <div class="item-droplist draggable">サブタスク1</div>
                                             <ul>
-                                                <li class="draggable">サブタスク①</li>
-                                                <li class="draggable">サブタスク②</li>
+                                                <li class="draggable">サブタスク2.1.1</li>
+                                                <li class="draggable">サブタスク2.1.2</li>
                                             </ul>
                                         </li>
-                                        <li class="draggable">サブタスク②</li>
+                                        <li class="draggable">サブタスク2</li>
                                     </ul>
                                 </li>
                             </ul>
