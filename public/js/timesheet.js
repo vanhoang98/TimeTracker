@@ -1,7 +1,8 @@
 $(document).ready(function () {
     switch_next_pre_week();
     taskCommon();
-    fetchstudent();
+    getdataAJax();
+    calendarHeader();
 
     $(".draggable").draggable({
         helper: "clone",
@@ -11,16 +12,22 @@ $(document).ready(function () {
         }
     });
 
-    $(".draggable").droppable({
-        greedy: true,
-        drop: function(event,ui){
-            ui.draggable.draggable('option','revert',true);
-        }
-    });
+    // $(".draggable").droppable({
+    //     greedy: true,
+    //     drop: function(event,ui){
+    //         ui.draggable.draggable('option','revert',true);
+    //     }
+    // });
 
     $(".calendar-entry-cell").droppable({
         accept: '.draggable',
+
         drop: function(event, ui) {
+            childCount = $(this).children().length;
+            if (childCount !=0)
+            {
+                return;
+            }
             var $newElement = $(ui.draggable.clone());
             var $newdiv = $('<div class="calendar-entry"></div>');
             $newdiv.append($newElement).addClass("choosed-task");
@@ -31,19 +38,51 @@ $(document).ready(function () {
 
 });
 
-function fetchstudent() {
+function getdataAJax() {
     $.ajax({
         type: "GET",
         url: "/api/employee/task",
         dataType: "json",
         success: function (response) {
             $.each(response.data, function(index, item) {
-                console.log(item.working_time_start);
-
+                console.log(item);
+                var dateData = new Date(item.working_time_start);
+                for (let i=0; i < 31; i++) {
+                    if(i == dateData.getDate()) {
+                        console.log(i);
+                        for (let a = 0; a < 24; a++) {
+                            if(a == dateData.getHours()) {
+                                console.log(a);
+                                var divParent = $('.calendar-entry-cell[data-day="' + i + '"]').filter('.calendar-entry-cell[data-start="' + a + '"]');
+                                if (i == dateData.getDate() && a == dateData.getHours()) {
+                                    divParent.append(`
+                                        <div class="calendar-entry choosed-task ui-resizable">
+                                            <li class="text-ellipsis draggable ui-draggable ui-draggable-handle" style="">`+item.task_id+`</li>
+                                            <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
+                                            <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+                                        </div>
+                                    `);
+                                }
+                            }
+                        }
+                    }
+                }
             });
 
         }
     });
+}
+
+function calendarHeader() {
+    $('.day-calendar').click(function() {
+        today = new Date();
+        if ($('.calendar-header-cell').length == 7) {
+            days = document.getElementsByClassName("calendar-header-cell");
+            for (let i = 0; i < days.length; i++) {
+                console.log(days.item(i))
+            }
+        }
+    })
 }
 
 function taskCommon() {
