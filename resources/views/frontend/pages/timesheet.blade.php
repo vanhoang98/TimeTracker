@@ -75,32 +75,16 @@
                     </div>
 
                     <ul class="item-tree">
+                        @foreach($task_tree as $project)
                         <li>
-                            <div class="item-dropdown active-title draggable">プロジェクト1</div>
+                            <div class="item-dropdown draggable" id="{{$project->id}}">{{$project->name}}</div>
                             <ul>
-                                <li class="f-size-small">
-                                    <div class="item-droplist draggable">タスク1</div>
-                                    <ul>
-                                        <li class="draggable">サブタスク1.1</li>
-                                        <li class="draggable">サブタスク1.2</li>
-                                    </ul>
-                                </li>
-
-                                <li class="f-size-large">
-                                    <div class="item-droplist draggable">タスク2</div>
-                                    <ul>
-                                        <li>
-                                            <div class="item-droplist draggable">サブタスク1</div>
-                                            <ul>
-                                                <li class="draggable">サブタスク2.1.1</li>
-                                                <li class="draggable">サブタスク2.1.2</li>
-                                            </ul>
-                                        </li>
-                                        <li class="draggable">サブタスク2</li>
-                                    </ul>
-                                </li>
+                                @foreach($project->children_tasks as $childTask)
+                                    @include('frontend.pages.child_task', ['child_task' => $childTask])
+                                @endforeach
                             </ul>
                         </li>
+                        @endforeach
                     </ul>
                 </div>
             </li>

@@ -12,7 +12,7 @@
     box-shadow: 3px 4px 5px rgb(148, 93, 131);
 }
 
-.calendar-entry li {
+.calendar-entry .draggable {
     padding-top: 7px;
     padding-left: 8px;
 }

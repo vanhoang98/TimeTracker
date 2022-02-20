@@ -1,7 +1,7 @@
 $(document).ready(function () {
     switch_next_pre_week();
-    taskCommon();
-    showEventsAJax();
+    taskCommonAction();
+    showEmployeeTasks();
     calendarHeader();
 
     $(".draggable").draggable({
@@ -33,15 +33,25 @@ $(document).ready(function () {
             $newdiv.append($newElement).addClass("choosed-task");
             $(this).append($newdiv);
 
+            // Get data to create a Event
+            var $target = $(ui.draggable);
+            var dataId = $target.attr('task-id');
+            var dataMoth = $(this).attr('data-month');
+            var dataDay = $(this).attr('data-day');
+            var dataStart = $(this).attr('data-start');
+            var dataFinish = $(this).attr('data-finish');
 
+            // console.log(dataId, dataMoth, dataDay, dataStart, dataFinish);
 
-            taskCommon();
+            createEmployeeTasksDropped(dataId, dataMoth, dataDay, dataStart, dataFinish);
+
+            taskCommonAction();
         }
     });
 
 });
 
-function showEventsAJax() {
+function showEmployeeTasks() {
     $.ajax({
         type: "GET",
         url: "/api/employee/task",
@@ -52,15 +62,13 @@ function showEventsAJax() {
                 var dateData = new Date(item.working_time_start);
                 for (let i=0; i < 31; i++) {
                     if(i == dateData.getDate()) {
-                        console.log(i);
                         for (let a = 0; a < 24; a++) {
                             if(a == dateData.getHours()) {
-                                console.log(a);
                                 var divParent = $('.calendar-entry-cell[data-day="' + i + '"]').filter('.calendar-entry-cell[data-start="' + a + '"]');
                                 if (i == dateData.getDate() && a == dateData.getHours()) {
                                     divParent.append(`
                                         <div class="calendar-entry choosed-task ui-resizable">
-                                            <li class="text-ellipsis draggable ui-draggable ui-draggable-handle" style="">`+item.task_name+`</li>
+                                            <div class="item-droplist draggable ui-draggable ui-draggable-handle" task-id="`+item.task_id+`">`+item.task_name+`</div>
                                             <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
                                             <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
                                         </div>
@@ -76,21 +84,25 @@ function showEventsAJax() {
     });
 }
 
-// function createEventsAJax() {
-//     $.ajax({
-//         url: "/api/employee/task",
-//         type: "POST",
-//         dataType: "json",
-//         data: {
-//             task_id: ,
-//             working_time_start: ,
-//             working_time_finish: + 1
-//         },
-//         success: function(data) {
-//             alert("Create event success !")
-//         }
-//     });
-// }
+function createEmployeeTasksDropped(taskId, dataMoth, dataDay, dataStart, dataFinish) {
+
+    var Time_start = "2022-"+dataMoth+"-"+dataDay+" "+dataStart;
+    var Time_finish = "2022-"+dataMoth+"-"+dataDay+" "+dataFinish;
+    $.ajax({
+        url: "/api/employee/task",
+        type: "POST",
+        dataType: "json",
+        data: {
+            task_id: taskId,
+            working_time_start: Time_start,
+            working_time_finish: Time_finish
+        },
+        success: function(data) {
+            alert("Create event success !")
+            console.log(taskId, Time_start)
+        }
+    });
+}
 
 function calendarHeader() {
     $('.day-calendar').click(function() {
@@ -104,9 +116,8 @@ function calendarHeader() {
     })
 }
 
-function taskCommon() {
+function taskCommonAction() {
 
-    var $targetPos = $(".choosed-task").not(this);
     $(".choosed-task").resizable({
         handles: "n, s",
         grid: [ 0, 100 ],
