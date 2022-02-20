@@ -9,7 +9,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta property="og:type" content="website">
-  
+
     <link rel="stylesheet" media="all" href="{{ asset('css/common.css') }}">
     <link rel="stylesheet" media="all" href="{{ asset('css/style.css') }}">
 
@@ -21,7 +21,7 @@
 <body>
     @include('frontend.layouts.header')
 
-    @include('frontend.pages.timesheet')
+    @include('frontend.pages.timesheet', ['task_tree' => $taskTree])
 </body>
 
 </html>
