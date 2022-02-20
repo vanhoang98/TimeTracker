@@ -13,7 +13,7 @@ class TimeSheetController extends Controller
     public function index()
     {
         $taskTree =  $this->getTaskTree();
-        return view('frontend.pages.timesheet', compact('taskTree'));
+        return view('frontend.layouts.master', compact('taskTree'));
     }
 
     public function getTaskTree()
