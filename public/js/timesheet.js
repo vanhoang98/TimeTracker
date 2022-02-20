@@ -1,7 +1,7 @@
 $(document).ready(function () {
     switch_next_pre_week();
     taskCommon();
-    getdataAJax();
+    showEventsAJax();
     calendarHeader();
 
     $(".draggable").draggable({
@@ -21,24 +21,27 @@ $(document).ready(function () {
 
     $(".calendar-entry-cell").droppable({
         accept: '.draggable',
-
         drop: function(event, ui) {
             childCount = $(this).children().length;
             if (childCount !=0)
             {
+                alert("既存の工数がありますので、新規の工数を入力する事ができません!");
                 return;
             }
             var $newElement = $(ui.draggable.clone());
             var $newdiv = $('<div class="calendar-entry"></div>');
             $newdiv.append($newElement).addClass("choosed-task");
             $(this).append($newdiv);
+
+
+
             taskCommon();
         }
     });
 
 });
 
-function getdataAJax() {
+function showEventsAJax() {
     $.ajax({
         type: "GET",
         url: "/api/employee/task",
@@ -57,7 +60,7 @@ function getdataAJax() {
                                 if (i == dateData.getDate() && a == dateData.getHours()) {
                                     divParent.append(`
                                         <div class="calendar-entry choosed-task ui-resizable">
-                                            <li class="text-ellipsis draggable ui-draggable ui-draggable-handle" style="">`+item.task_id+`</li>
+                                            <li class="text-ellipsis draggable ui-draggable ui-draggable-handle" style="">`+item.task_name+`</li>
                                             <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
                                             <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
                                         </div>
@@ -72,6 +75,22 @@ function getdataAJax() {
         }
     });
 }
+
+// function createEventsAJax() {
+//     $.ajax({
+//         url: "/api/employee/task",
+//         type: "POST",
+//         dataType: "json",
+//         data: {
+//             task_id: ,
+//             working_time_start: ,
+//             working_time_finish: + 1
+//         },
+//         success: function(data) {
+//             alert("Create event success !")
+//         }
+//     });
+// }
 
 function calendarHeader() {
     $('.day-calendar').click(function() {

@@ -36,6 +36,15 @@ class Task extends Model
             ->withPivot('working_time_start', 'working_time_finish','detail');
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class,'parent_task_id');
+    }
+
+    public function childrenTasks()
+    {
+        return $this->hasMany(Task::class,'parent_task_id')->with('tasks');
+    }
 //    public function parentTask()
 //    {
 //        return $this->belongsTo(Task::class, 'parent_task_id');

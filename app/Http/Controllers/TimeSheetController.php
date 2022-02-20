@@ -2,13 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class TimeSheetController extends Controller
 {
     public function index()
-    {        
-        return view('frontend.layouts.master');
+    {
+        $taskTree =  $this->getTaskTree();
+        return view('frontend.pages.timesheet', compact('taskTree'));
+    }
+
+    public function getTaskTree()
+    {
+        $projects = Employee::find(1)->projects;
+        $projects->map(function ($project){
+            $project['children_tasks'] = $project->getTaskTree();
+        });
+        return $projects;
+
     }
 }

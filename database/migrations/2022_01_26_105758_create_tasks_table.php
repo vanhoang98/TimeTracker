@@ -20,7 +20,9 @@ class CreateTasksTable extends Migration
                 ->references('id')->on('projects')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->bigInteger('parent_task_id')->nullable();
+            $table->integer('parent_task_id')->unsigned()->nullable();
+            $table->foreign('parent_task_id')
+                ->references('id')->on('tasks');
             $table->integer('number_item');
             $table->tinyInteger('status');
             $table->string('leader');
