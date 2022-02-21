@@ -40,9 +40,6 @@ $(document).ready(function () {
             var dataDay = $(this).attr('data-day');
             var dataStart = $(this).attr('data-start');
             var dataFinish = $(this).attr('data-finish');
-
-            // console.log(dataId, dataMoth, dataDay, dataStart, dataFinish);
-
             createEmployeeTasksDropped(dataId, dataMoth, dataDay, dataStart, dataFinish);
 
             taskCommonAction();
@@ -96,10 +93,6 @@ function createEmployeeTasksDropped(taskId, dataMoth, dataDay, dataStart, dataFi
             task_id: taskId,
             working_time_start: Time_start,
             working_time_finish: Time_finish
-        },
-        success: function(data) {
-            alert("Create event success !")
-            console.log(taskId, Time_start)
         }
     });
 }
