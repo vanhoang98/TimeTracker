@@ -4,6 +4,11 @@ $(document).ready(function () {
     showEmployeeTasks();
     calendarHeader();
 
+    // $(".calendar-entry-cell").resizable({
+    //     handles: "n, s",
+    //     grid: [ 0, 100 ],
+    // });
+
     $(".draggable").draggable({
         helper: "clone",
         revert: "invalid",
@@ -21,26 +26,33 @@ $(document).ready(function () {
 
     $(".calendar-entry-cell").droppable({
         accept: '.draggable',
+        // accept: function(d) {
+        //     if(d.hasClass("foo")||(d.attr("id")=="bar")){
+        //         return true;
+        //     }
+        // },
         drop: function(event, ui) {
             childCount = $(this).children().length;
-            if (childCount !=0)
-            {
+            if (childCount !=0) {
                 alert("既存の工数がありますので、新規の工数を入力する事ができません!");
                 return;
             }
+
+            var $target = $(ui.draggable);
+            // Drop task to create Event in Calendar
             var $newElement = $(ui.draggable.clone());
             var $newdiv = $('<div class="calendar-entry"></div>');
-            $newdiv.append($newElement).addClass("choosed-task");
+            $newdiv.attr('project-id', $target.attr('project-id'));
+            $newdiv.append($newElement).append(`<p>[Project ID: `+$target.attr('project-id')+`]</p>`);
             $(this).append($newdiv);
 
-            // Get data to create a Event
-            var $target = $(ui.draggable);
+            // Get data to create Event
             var dataId = $target.attr('task-id');
-            var dataMoth = $(this).attr('data-month');
+            var dataMonth = $(this).attr('data-month');
             var dataDay = $(this).attr('data-day');
             var dataStart = $(this).attr('data-start');
             var dataFinish = $(this).attr('data-finish');
-            createEmployeeTasksDropped(dataId, dataMoth, dataDay, dataStart, dataFinish);
+            createEmployeeTasksDropped(dataId, dataMonth, dataDay, dataStart, dataFinish);
 
             taskCommonAction();
         }
@@ -64,8 +76,9 @@ function showEmployeeTasks() {
                                 var divParent = $('.calendar-entry-cell[data-day="' + i + '"]').filter('.calendar-entry-cell[data-start="' + a + '"]');
                                 if (i == dateData.getDate() && a == dateData.getHours()) {
                                     divParent.append(`
-                                        <div class="calendar-entry choosed-task ui-resizable">
-                                            <div class="item-droplist draggable ui-draggable ui-draggable-handle" task-id="`+item.task_id+`">`+item.task_name+`</div>
+                                        <div class="calendar-entry ui-resizable" project-id="`+item.project_id+`">
+                                            <div class="item-droplist draggable ui-draggable ui-draggable-handle" task-id="`+item.task_id+`" employeeTask-id="`+item.id+`">`+item.task_name+`</div>
+                                            <p>[Project ID: `+item.project_id+`]</p>
                                             <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
                                             <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
                                         </div>
@@ -81,10 +94,10 @@ function showEmployeeTasks() {
     });
 }
 
-function createEmployeeTasksDropped(taskId, dataMoth, dataDay, dataStart, dataFinish) {
+function createEmployeeTasksDropped(taskId, dataMonth, dataDay, dataStart, dataFinish) {
 
-    var Time_start = "2022-"+dataMoth+"-"+dataDay+" "+dataStart;
-    var Time_finish = "2022-"+dataMoth+"-"+dataDay+" "+dataFinish;
+    var Time_start = "2022-"+dataMonth+"-"+dataDay+" "+dataStart;
+    var Time_finish = "2022-"+dataMonth+"-"+dataDay+" "+dataFinish;
     $.ajax({
         url: "/api/employee/task",
         type: "POST",
@@ -110,8 +123,7 @@ function calendarHeader() {
 }
 
 function taskCommonAction() {
-
-    $(".choosed-task").resizable({
+    $(".calendar-entry").resizable({
         handles: "n, s",
         grid: [ 0, 100 ],
     });
