@@ -30,7 +30,7 @@
 <body>
     @include('frontend.layouts.header')
 
-    @include('frontend.pages.timesheet')
+    @include('frontend.pages.timesheet', ['task_tree' => $taskTree])
 </body>
 
 </html>

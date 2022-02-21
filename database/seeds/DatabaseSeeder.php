@@ -16,5 +16,6 @@ class DatabaseSeeder extends Seeder
          $this->call(ProcessCategorySeeder::class);
          $this->call(TaskCategorySeeder::class);
          $this->call(EmployeeSeeder::class);
+         $this->call(EmployeeProjectSeeder::class);
     }
 }

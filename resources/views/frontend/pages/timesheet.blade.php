@@ -75,32 +75,16 @@
                     </div>
 
                     <ul class="item-tree">
+                        @foreach($task_tree as $project)
                         <li>
-                            <div class="item-dropdown active-title draggable">プロジェクト①</div>
+                            <div class="item-dropdown" id="{{$project->id}}">{{$project->name}}</div>
                             <ul>
-                                <li class="f-size-small">
-                                    <div class="item-droplist draggable">タスク①</div>
-                                    <ul>
-                                        <li class="draggable">サブタスク①</li>
-                                        <li class="draggable">サブタスク②</li>
-                                    </ul>
-                                </li>
-
-                                <li class="f-size-large">
-                                    <div class="item-droplist draggable">タスク②</div>
-                                    <ul>
-                                        <li>
-                                            <div class="item-droplist draggable">サブタスク①</div>
-                                            <ul>
-                                                <li class="draggable">サブタスク①</li>
-                                                <li class="draggable">サブタスク②</li>
-                                            </ul>
-                                        </li>
-                                        <li class="draggable">サブタスク②</li>
-                                    </ul>
-                                </li>
+                                @foreach($project->children_tasks as $childTask)
+                                    @include('frontend.pages.child_task', ['child_task' => $childTask])
+                                @endforeach
                             </ul>
                         </li>
+                        @endforeach
                     </ul>
                 </div>
             </li>
