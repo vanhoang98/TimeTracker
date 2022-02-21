@@ -37,8 +37,8 @@
             <li class="l-sidebar__item">
                 <div class="item-head item-dropdown">マイワークアイテム</div>
                 <ul class="item-body item-root">
-                    <li class="text-ellipsis draggable">タスク①</li>
-                    <li class="text-ellipsis draggable">タスク②</li>
+                    <li class="text-ellipsis draggable">担当中のタスク1</li>
+                    <li class="text-ellipsis draggable">担当中のタスク2</li>
                 </ul>
             </li>
 
@@ -77,7 +77,7 @@
                     <ul class="item-tree">
                         @foreach($task_tree as $project)
                         <li>
-                            <div class="item-dropdown" id="{{$project->id}}">{{$project->name}}</div>
+                            <div class="item-dropdown draggable" id="{{$project->id}}">{{$project->name}}</div>
                             <ul>
                                 @foreach($project->children_tasks as $childTask)
                                     @include('frontend.pages.child_task', ['child_task' => $childTask])
@@ -131,7 +131,7 @@
                     </ul>
                 </div>
                 <div class="timepicker-range">
-                  
+
                 </div>
                 <div class="list-action-outline">
 
@@ -154,30 +154,6 @@
                                 @endforeach
                             </div>
                         </div>
-
-                        {{-- @foreach (range(1, 5) as $item)
-                            <div class="calendar-entry-col">
-                                <div class="drag-new-entry">
-                                    <div class="weekly-grid">
-                                        @foreach (range(1, 24) as $item)
-                                            <div class="calendar-entry-cell"></div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-
-                        @foreach (range(1, 2) as $item)
-                            <div class="calendar-entry-col" style="background: #f0f0f0">
-                                <div class="drag-new-entry">
-                                    <div class="weekly-grid">
-                                        @foreach (range(1, 24) as $item)
-                                            <div class="calendar-entry-cell"></div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach --}}
                     </div>
                     <ul class='custom-menu'>
                         <li><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
@@ -203,41 +179,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $('.day-calendar').click(function() {
-        today = new Date();
-        if ($('.calendar-header-cell').length == 7) {
-            days = document.getElementsByClassName("calendar-header-cell");
-            for (let i = 0; i < days.length; i++) {
-                // if (parseInt($('.calendar-header-cell').attr('id')) != today.getDate()) {
-                //     days.item(i).remove();
-                // }
-                console.log(days.item(i))
-            }
-            // $(".calendar-header-cell").remove();
-            // $(".calendar-entry-col").remove();
-            // $('.calendar-header').append(`
-            //     <div class="calendar-header-cell" style="background-color: #c1ddf1">
-            //         <div class="day">
-            //             <b>${today.getMonth() + 1}</b>
-            //             <b>/</b>
-            //             <b>${today.getDate()}</b>
-            //         </div>
-            //     </div>
-            // `)
-            // $('.calendar-body-wrapper').append(`
-            //     <div class="calendar-entry-col">
-            //         <div class="drag-new-entry">
-            //             <div class="weekly-grid">
-            //                 <div class="calendar-entry-cell"></div>
-            //                 <div class="calendar-entry-cell"></div>
-            //                 <div class="calendar-entry-cell"></div>
-            //                 <div class="calendar-entry-cell"></div>
-            //             </div>
-            //         </div>
-            //     </div>
-            // `)
-        }
-    })
-</script>

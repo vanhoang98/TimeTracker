@@ -1,31 +1,120 @@
-$( function() {
+$(document).ready(function () {
     switch_next_pre_week();
-    taskCommon();
+    taskCommonAction();
+    showEmployeeTasks();
+    calendarHeader();
 
     $(".draggable").draggable({
         helper: "clone",
-        revert: "true",
+        revert: "invalid",
+        stop: function(){
+            $(this).draggable('option','revert','invalid');
+        }
     });
+
+    // $(".draggable").droppable({
+    //     greedy: true,
+    //     drop: function(event,ui){
+    //         ui.draggable.draggable('option','revert',true);
+    //     }
+    // });
 
     $(".calendar-entry-cell").droppable({
         accept: '.draggable',
         drop: function(event, ui) {
+            childCount = $(this).children().length;
+            if (childCount !=0)
+            {
+                alert("既存の工数がありますので、新規の工数を入力する事ができません!");
+                return;
+            }
             var $newElement = $(ui.draggable.clone());
             var $newdiv = $('<div class="calendar-entry"></div>');
             $newdiv.append($newElement).addClass("choosed-task");
             $(this).append($newdiv);
-            taskCommon();
+
+            // Get data to create a Event
+            var $target = $(ui.draggable);
+            var dataId = $target.attr('task-id');
+            var dataMoth = $(this).attr('data-month');
+            var dataDay = $(this).attr('data-day');
+            var dataStart = $(this).attr('data-start');
+            var dataFinish = $(this).attr('data-finish');
+            createEmployeeTasksDropped(dataId, dataMoth, dataDay, dataStart, dataFinish);
+
+            taskCommonAction();
         }
     });
 
-} );
+});
 
+function showEmployeeTasks() {
+    $.ajax({
+        type: "GET",
+        url: "/api/employee/task",
+        dataType: "json",
+        success: function (response) {
+            $.each(response.data, function(index, item) {
+                console.log(item);
+                var dateData = new Date(item.working_time_start);
+                for (let i=0; i < 31; i++) {
+                    if(i == dateData.getDate()) {
+                        for (let a = 0; a < 24; a++) {
+                            if(a == dateData.getHours()) {
+                                var divParent = $('.calendar-entry-cell[data-day="' + i + '"]').filter('.calendar-entry-cell[data-start="' + a + '"]');
+                                if (i == dateData.getDate() && a == dateData.getHours()) {
+                                    divParent.append(`
+                                        <div class="calendar-entry choosed-task ui-resizable">
+                                            <div class="item-droplist draggable ui-draggable ui-draggable-handle" task-id="`+item.task_id+`">`+item.task_name+`</div>
+                                            <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
+                                            <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+                                        </div>
+                                    `);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
 
-function taskCommon() {
-    $(".choosed-task").resizable(
-        { handles: 'n, s' },
-        { grid: [ 0, 100 ]},
-    );
+        }
+    });
+}
+
+function createEmployeeTasksDropped(taskId, dataMoth, dataDay, dataStart, dataFinish) {
+
+    var Time_start = "2022-"+dataMoth+"-"+dataDay+" "+dataStart;
+    var Time_finish = "2022-"+dataMoth+"-"+dataDay+" "+dataFinish;
+    $.ajax({
+        url: "/api/employee/task",
+        type: "POST",
+        dataType: "json",
+        data: {
+            task_id: taskId,
+            working_time_start: Time_start,
+            working_time_finish: Time_finish
+        }
+    });
+}
+
+function calendarHeader() {
+    $('.day-calendar').click(function() {
+        today = new Date();
+        if ($('.calendar-header-cell').length == 7) {
+            days = document.getElementsByClassName("calendar-header-cell");
+            for (let i = 0; i < days.length; i++) {
+                console.log(days.item(i))
+            }
+        }
+    })
+}
+
+function taskCommonAction() {
+
+    $(".choosed-task").resizable({
+        handles: "n, s",
+        grid: [ 0, 100 ],
+    });
 
     $(".calendar-entry").bind("contextmenu", function (event) {
         event.preventDefault();
