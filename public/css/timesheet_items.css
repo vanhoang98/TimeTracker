@@ -1,15 +1,26 @@
 .calendar-entry {
-    z-index: 5;
     height: 90px;
     background-color: pink;
-    color: darkred;
+    color: black;
     border-radius: 1.25rem;
     list-style-type: none;
-    box-shadow: 3px 4px 5px rgb(193 163 184);
+    box-shadow: 3px 4px 5px rgb(123, 127, 134);
+}
+
+.calendar-entry[project-id="1"] {
+    background-color: rgb(72, 196, 121);
+}
+
+.calendar-entry[project-id="2"] {
+    background-color: rgb(202, 214, 28);
+}
+
+.calendar-entry[project-id="3"] {
+    background-color: rgb(197, 97, 97);
 }
 
 .calendar-entry:hover {
-    box-shadow: 3px 4px 5px rgb(148, 93, 131);
+    box-shadow: 3px 4px 5px rgb(59 58 61);
 }
 
 .calendar-entry .draggable {
@@ -17,9 +28,13 @@
     padding-left: 8px;
 }
 
+.calendar-entry p {
+    padding-left: 8px;
+}
+
 .custom-menu {
     display: none;
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     overflow: visible;
     border: 1px solid #CCC;
