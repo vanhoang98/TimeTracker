@@ -1,5 +1,4 @@
 .calendar-entry {
-    z-index: 5;
     height: 90px;
     background-color: pink;
     color: black;
@@ -35,7 +34,7 @@
 
 .custom-menu {
     display: none;
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     overflow: visible;
     border: 1px solid #CCC;

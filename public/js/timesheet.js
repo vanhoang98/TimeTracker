@@ -1,13 +1,7 @@
 $(document).ready(function () {
     switch_next_pre_week();
-    taskCommonAction();
     showEmployeeTasks();
     calendarHeader();
-
-    // $(".calendar-entry-cell").resizable({
-    //     handles: "n, s",
-    //     grid: [ 0, 100 ],
-    // });
 
     $(".draggable").draggable({
         helper: "clone",
@@ -17,20 +11,9 @@ $(document).ready(function () {
         }
     });
 
-    // $(".draggable").droppable({
-    //     greedy: true,
-    //     drop: function(event,ui){
-    //         ui.draggable.draggable('option','revert',true);
-    //     }
-    // });
 
     $(".calendar-entry-cell").droppable({
         accept: '.draggable',
-        // accept: function(d) {
-        //     if(d.hasClass("foo")||(d.attr("id")=="bar")){
-        //         return true;
-        //     }
-        // },
         drop: function(event, ui) {
             childCount = $(this).children().length;
             if (childCount !=0) {
@@ -40,10 +23,40 @@ $(document).ready(function () {
 
             var $target = $(ui.draggable);
             // Drop task to create Event in Calendar
-            var $newElement = $(ui.draggable.clone());
-            var $newdiv = $('<div class="calendar-entry"></div>');
-            $newdiv.attr('project-id', $target.attr('project-id'));
-            $newdiv.append($newElement).append(`<p>[Project ID: `+$target.attr('project-id')+`]</p>`);
+            // var $newElement = $(ui.draggable.clone());
+            // var $newdiv = $('<div class="calendar-entry"></div>');
+            // $newdiv.attr('project-id', $target.attr('project-id'));
+            // $newdiv.append($newElement).append(`<p>[Project ID: `+$target.attr('project-id')+`]</p>`);
+
+            var $newdiv = $(`
+                <div class="calendar-entry ui-resizable" project-id="`+$target.attr('project-id')+`">
+                    <div class="item-droplist draggable ui-draggable ui-draggable-handle" task-id="`+$target.attr('task-id')+`">`+$target.text()+`</div>
+                    <p>[Project ID: `+$target.attr('project-id')+`]</p>
+                    <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
+                    <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+                    <ul class='custom-menu'>
+                        <li class="delete-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
+                        <li><i class="icon-itemMenu fa fa-square"></i>工程分類<i class="arrow-right fa fa-chevron-right"></i>
+                            <ul class="process-subMenu">
+                                <li><a class="dropdown-item" href="#">要求分析</a></li>
+                                <li><a class="dropdown-item" href="#">基本設計</a></li>
+                                <li><a class="dropdown-item" href="#">開発</a></li>
+                            </ul>
+                        </li>
+                        <li><i class="icon-itemMenu fa fa-square-o"></i>作業分類<i class="arrow-right fa fa-chevron-right"></i>
+                            <ul class="process-subMenu">
+                                <li><a class="dropdown-item" href="#">レビュー</a></li>
+                                <li><a class="dropdown-item" href="#">手戻り</a></li>
+                                <li><a class="dropdown-item" href="#">修正</a></li>
+                                <li><a class="dropdown-item" href="#">管理</a></li>
+                            </ul>
+                        </li><hr>
+                        <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
+                    </ul>
+                </div>
+            `);
+
+
             $(this).append($newdiv);
 
             // Get data to create Event
@@ -53,9 +66,8 @@ $(document).ready(function () {
             var dataStart = $(this).attr('data-start');
             var dataFinish = $(this).attr('data-finish');
             createEmployeeTasksDropped(dataId, dataMonth, dataDay, dataStart, dataFinish);
-
             taskCommonAction();
-        }
+        },
     });
 
 });
@@ -81,6 +93,25 @@ function showEmployeeTasks() {
                                             <p>[Project ID: `+item.project_id+`]</p>
                                             <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div>
                                             <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div>
+                                            <ul class='custom-menu' employeeTask-id="`+item.id+`">
+                                                <li class="delete-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
+                                                <li><i class="icon-itemMenu fa fa-square"></i>工程分類<i class="arrow-right fa fa-chevron-right"></i>
+                                                    <ul class="process-subMenu">
+                                                        <li><a class="dropdown-item" href="#">要求分析</a></li>
+                                                        <li><a class="dropdown-item" href="#">基本設計</a></li>
+                                                        <li><a class="dropdown-item" href="#">開発</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><i class="icon-itemMenu fa fa-square-o"></i>作業分類<i class="arrow-right fa fa-chevron-right"></i>
+                                                    <ul class="process-subMenu">
+                                                        <li><a class="dropdown-item" href="#">レビュー</a></li>
+                                                        <li><a class="dropdown-item" href="#">手戻り</a></li>
+                                                        <li><a class="dropdown-item" href="#">修正</a></li>
+                                                        <li><a class="dropdown-item" href="#">管理</a></li>
+                                                    </ul>
+                                                </li><hr>
+                                                <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
+                                            </ul>
                                         </div>
                                     `);
                                 }
@@ -89,13 +120,12 @@ function showEmployeeTasks() {
                     }
                 }
             });
-
+            taskCommonAction();
         }
     });
 }
 
 function createEmployeeTasksDropped(taskId, dataMonth, dataDay, dataStart, dataFinish) {
-
     var Time_start = "2022-"+dataMonth+"-"+dataDay+" "+dataStart;
     var Time_finish = "2022-"+dataMonth+"-"+dataDay+" "+dataFinish;
     $.ajax({
@@ -106,7 +136,11 @@ function createEmployeeTasksDropped(taskId, dataMonth, dataDay, dataStart, dataF
             task_id: taskId,
             working_time_start: Time_start,
             working_time_finish: Time_finish
-        }
+        },
+        complete: function (result) {
+            console.log(result);
+        },
+
     });
 }
 
@@ -123,17 +157,19 @@ function calendarHeader() {
 }
 
 function taskCommonAction() {
+    // Resize time of employee Task
     $(".calendar-entry").resizable({
         handles: "n, s",
         grid: [ 0, 100 ],
     });
 
+    // Show submenu of employee Task
     $(".calendar-entry").bind("contextmenu", function (event) {
         event.preventDefault();
-        $(".custom-menu").finish().slideDown('fast').css({
-            top: event.pageY -65,
-            left: event.pageX
-        });
+        $('.custom-menu').hide();
+        var employeetaskId = $(this).children('.draggable').attr("employeetask-id");
+        var $subMenu = $(`.custom-menu[employeetask-id=`+ employeetaskId +`]`);
+        $subMenu.finish().slideDown('fast');
     });
 
     $(document).bind("click", function(e) {
@@ -145,8 +181,22 @@ function taskCommonAction() {
     }).mouseleave(function() {
         $(this).children('ul').stop().slideUp('fast')
     });
-}
 
+    // Delete employee Task
+    $(".delete-task").click(function(){
+        var $eleParent_ul =  $(this).parent();
+        var $eleGrandParent = $eleParent_ul.parent();
+        console.log($eleGrandParent);
+        var employeeTaskId = $eleParent_ul.attr("employeetask-id");
+        $.ajax({
+            url: "/api/employee/task/" + employeeTaskId,
+            type: "DELETE",
+            dataType: "json",
+            data: { task_id: employeeTaskId }
+        });
+        $eleGrandParent.remove();
+    });
+}
 
 function switch_next_pre_week() {
     var dt = new Date();
