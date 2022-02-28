@@ -1,8 +1,12 @@
 $(document).ready(function () {
     switch_next_pre_week();
     showEmployeeTasks();
-    calendarHeader();
+    calendarDay();
+    taskCommonAction();
+    dragDrop();
+});
 
+function dragDrop() {
     $(".draggable").draggable({
         helper: "clone",
         revert: "invalid",
@@ -10,7 +14,6 @@ $(document).ready(function () {
             $(this).draggable('option','revert','invalid');
         }
     });
-
 
     $(".calendar-entry-cell").droppable({
         accept: '.draggable',
@@ -61,16 +64,17 @@ $(document).ready(function () {
 
             // Get data to create Event
             var dataId = $target.attr('task-id');
-            var dataMonth = $(this).attr('data-month');
+            var dataYear = $(this).attr('data-year');
+            var dataMoth = $(this).attr('data-month');
             var dataDay = $(this).attr('data-day');
             var dataStart = $(this).attr('data-start');
             var dataFinish = $(this).attr('data-finish');
-            createEmployeeTasksDropped(dataId, dataMonth, dataDay, dataStart, dataFinish);
+            createEmployeeTasksDropped(dataId, dataYear, dataMoth, dataDay, dataStart, dataFinish);
+
             taskCommonAction();
         },
     });
-
-});
+}
 
 function showEmployeeTasks() {
     $.ajax({
@@ -79,7 +83,6 @@ function showEmployeeTasks() {
         dataType: "json",
         success: function (response) {
             $.each(response.data, function(index, item) {
-                console.log(item);
                 var dateData = new Date(item.working_time_start);
                 for (let i=0; i < 31; i++) {
                     if(i == dateData.getDate()) {
@@ -125,9 +128,10 @@ function showEmployeeTasks() {
     });
 }
 
-function createEmployeeTasksDropped(taskId, dataMonth, dataDay, dataStart, dataFinish) {
-    var Time_start = "2022-"+dataMonth+"-"+dataDay+" "+dataStart;
-    var Time_finish = "2022-"+dataMonth+"-"+dataDay+" "+dataFinish;
+function createEmployeeTasksDropped(taskId, dataYear, dataMoth, dataDay, dataStart, dataFinish) {
+
+    var Time_start = dataYear+"-"+dataMoth+"-"+dataDay+" "+dataStart;
+    var Time_finish = dataYear+"-"+dataMoth+"-"+dataDay+" "+dataFinish;
     $.ajax({
         url: "/api/employee/task",
         type: "POST",
@@ -142,18 +146,6 @@ function createEmployeeTasksDropped(taskId, dataMonth, dataDay, dataStart, dataF
         },
 
     });
-}
-
-function calendarHeader() {
-    $('.day-calendar').click(function() {
-        today = new Date();
-        if ($('.calendar-header-cell').length == 7) {
-            days = document.getElementsByClassName("calendar-header-cell");
-            for (let i = 0; i < days.length; i++) {
-                console.log(days.item(i))
-            }
-        }
-    })
 }
 
 function taskCommonAction() {
@@ -198,6 +190,33 @@ function taskCommonAction() {
     });
 }
 
+function calendarDay() {
+    $('.day-calendar').click(function() {
+        today = new Date();
+        if ($('.calendar-header-cell').length == 7) {
+            let day = today.getDate();
+            let month = today.getMonth() + 1;
+            const name = ["月", "火", "水", "木", "金", "土", "日"];
+            let dayName = name[today];
+            document.getElementById("dayOfWeek").innerHTML = month + '/' + day;
+
+            $('.calendar-header-cell').remove();
+            $('.calendar-entry-col').remove();
+
+            $('.calendar-header').append(`
+                <div class="calendar-header-cell" style="background-color: #c1ddf1" id=${day}>
+                    <div class="day">
+                        <b>${month}</b>
+                        <b>/</b>
+                        <b>${day}</b>
+                        <b>(${dayName})</b>
+                    </div>
+                </div>
+            `)
+        }
+    })
+}
+
 function switch_next_pre_week() {
     var dt = new Date();
     var currentWeekDay = dt.getDay();
@@ -209,17 +228,17 @@ function switch_next_pre_week() {
         const name = ["月", "火", "水", "木", "金", "土", "日"];
         date = new Date(new Date(dt).setDate(dt.getDate() - lessDays + i));
         x.date = date;
+        x.year = date.getFullYear();
         x.month = date.getMonth() + 1;
         x.day = date.getDate();
         x.dayName = name[i];
         list_days.push(x);
     }
 
-    document.getElementById("firstday").innerHTML = list_days[0].month + '/' + list_days[0].day;
-    document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
+    document.getElementById("dayOfWeek").innerHTML = list_days[0].month + '/' + list_days[0].day + ' ~ ' + list_days[6].month + '/' + list_days[6].day;
 
-    for (let i of list_days) {
-        if (i.day === dt.getDate() && i.month === dt.getMonth() + 1) {
+    for (let i of list_days) {        
+        if (i.day === dt.getDate() && i.month === dt.getMonth() + 1 && i.year === dt.getFullYear()) {
             $('.calendar-header').append(`
                 <div class="calendar-header-cell" style="background-color: #c1ddf1" id=${i.day}>
                     <div class="day">
@@ -245,18 +264,30 @@ function switch_next_pre_week() {
 
         text = ''
         for (let a = 0; a < 24; a++) {
-            text += `<div class="calendar-entry-cell" data-month = ${i.month} data-day = ${i.day} data-start = ${a} data-finish = ${a + 1}></div>`
+            text += `<div class="calendar-entry-cell" data-year = ${i.year} data-month = ${i.month} data-day = ${i.day} data-start = ${a} data-finish = ${a + 1}></div>`
         }
 
-        $('.calendar-body-wrapper').append(`
-            <div class="calendar-entry-col">
-                <div class="drag-new-entry">
-                    <div class="weekly-grid">
-                        ${text}
+        if (i.dayName === '土' || i.dayName === '日') {
+            $('.calendar-body-wrapper').append(`
+                <div class="calendar-entry-col">
+                    <div class="drag-new-entry">
+                        <div class="weekly-grid" style="background: #f0f0f0">
+                            ${text}
+                        </div>
                     </div>
                 </div>
-            </div>
-        `)
+            `)
+        } else {
+            $('.calendar-body-wrapper').append(`
+                <div class="calendar-entry-col">
+                    <div class="drag-new-entry">
+                        <div class="weekly-grid">
+                            ${text}
+                        </div>
+                    </div>
+                </div>
+            `)
+        }
     }
 
     $('.next-week').click(function() {
@@ -267,11 +298,10 @@ function switch_next_pre_week() {
             i.day = date.getDate();
         }
         $(".calendar-header-cell").remove();
-        document.getElementById("firstday").innerHTML = list_days[0].month + '/' + list_days[0].day;
-        document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
+        document.getElementById("dayOfWeek").innerHTML = list_days[0].month + '/' + list_days[0].day + ' ~ ' + list_days[6].month + '/' + list_days[6].day;
 
         for (let i of list_days) {
-            if (i.day === dt.getDate() && i.month === dt.getMonth() + 1) {
+            if (i.day === dt.getDate() && i.month === dt.getMonth() + 1 && i.year === dt.getFullYear() && i.year === dt.getFullYear()) {
                 $('.calendar-header').append(`
                     <div class="calendar-header-cell" style="background-color: #c1ddf1" id${i.day}>
                         <div class="day">
@@ -294,7 +324,42 @@ function switch_next_pre_week() {
                     </div>
                 `)
             }
+
+            $('.calendar-entry-col').each(function() {
+                $(this).remove();
+            })
         }
+
+        for (let i of list_days) {
+            text1 = ''
+            for (let a = 0; a < 24; a++) {
+                text1 += `<div class="calendar-entry-cell" data-year = ${i.year} data-month = ${i.month} data-day = ${i.day} data-start = ${a} data-finish = ${a + 1}></div>`
+            }
+
+            if (i.dayName === '土' || i.dayName === '日') {
+                $('.calendar-body-wrapper').append(`
+                    <div class="calendar-entry-col">
+                        <div class="drag-new-entry">
+                            <div class="weekly-grid" style="background: #f0f0f0">
+                                ${text1}
+                            </div>
+                        </div>
+                    </div>
+                `)
+            } else {
+                $('.calendar-body-wrapper').append(`
+                    <div class="calendar-entry-col">
+                        <div class="drag-new-entry">
+                            <div class="weekly-grid">
+                                ${text1}
+                            </div>
+                        </div>
+                    </div>
+                `)
+            }
+        }
+        showEmployeeTasks();
+        dragDrop();
     })
 
     $('.pre-week').click(function() {
@@ -305,11 +370,10 @@ function switch_next_pre_week() {
             i.day = date.getDate();
         }
         $(".calendar-header-cell").remove();
-        document.getElementById("firstday").innerHTML = list_days[0].month + '/' + list_days[0].day;
-        document.getElementById("lastday").innerHTML = list_days[6].month + '/' + list_days[6].day;
+        document.getElementById("dayOfWeek").innerHTML = list_days[0].month + '/' + list_days[0].day + ' ~ ' + list_days[6].month + '/' + list_days[6].day;
 
         for (let i of list_days) {
-            if (i.day === dt.getDate() && i.month === dt.getMonth() + 1) {
+            if (i.day === dt.getDate() && i.month === dt.getMonth() + 1 && i.year === dt.getFullYear()) {
                 $('.calendar-header').append(`
                     <div class="calendar-header-cell" style="background-color: #c1ddf1" id=${i.day}>
                         <div class="day">
@@ -332,6 +396,41 @@ function switch_next_pre_week() {
                     </div>
                 `)
             }
+
+            $('.calendar-entry-col').each(function() {
+                $(this).remove();
+            })
         }
+
+        for (let i of list_days) {
+            text2 = ''
+            for (let a = 0; a < 24; a++) {
+                text2 += `<div class="calendar-entry-cell" data-year = ${i.year} data-month = ${i.month} data-day = ${i.day} data-start = ${a} data-finish = ${a + 1}></div>`
+            }
+
+            if (i.dayName === '土' || i.dayName === '日') {
+                $('.calendar-body-wrapper').append(`
+                    <div class="calendar-entry-col">
+                        <div class="drag-new-entry">
+                            <div class="weekly-grid" style="background: #f0f0f0">
+                                ${text2}
+                            </div>
+                        </div>
+                    </div>
+                `)
+            } else {
+                $('.calendar-body-wrapper').append(`
+                    <div class="calendar-entry-col">
+                        <div class="drag-new-entry">
+                            <div class="weekly-grid">
+                                ${text2}
+                            </div>
+                        </div>
+                    </div>
+                `)
+            }
+        }
+        showEmployeeTasks();
+        dragDrop();
     })
 }

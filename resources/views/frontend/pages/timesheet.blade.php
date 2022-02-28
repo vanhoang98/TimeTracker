@@ -103,9 +103,7 @@
                         </li>
                         <li class="manual-mode">
                             <a href="">
-                                <span id = 'firstday'></span>
-                                <span> ~ </span>
-                                <span id = 'lastday'></span>
+                                <span id ='dayOfWeek'></span>
                             </a>
                         </li>
                         <li class="manual-mode icon-cmn">
@@ -124,7 +122,7 @@
                             </p>
                         </li>
                         <li class="manual-mode icon-cmn">
-                            <p href="" class="">
+                            <p href="" class="week-calendar">
                                 <img src="{{ asset('images/icon-week.png') }}" alt="">
                             </p>
                         </li>
