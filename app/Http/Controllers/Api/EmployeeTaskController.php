@@ -36,13 +36,24 @@ class EmployeeTaskController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->employee->tasks()->attach($request->task_id, [
+        $id = DB::table('employee_task')->insertGetId(
+        [
+            'employee_id' => $this->employee->id,
+            'task_id' => $request->task_id,
             'working_time_start' => $request->working_time_start,
             'working_time_finish' => $request->working_time_finish,
             'process_category_id' => 1,
             'task_category_id' => 1,
             'detail' => 'test test',
         ]);
+        return $id;
+//        return $this->employee->tasks()->attach($request->task_id, [
+//            'working_time_start' => $request->working_time_start,
+//            'working_time_finish' => $request->working_time_finish,
+//            'process_category_id' => 1,
+//            'task_category_id' => 1,
+//            'detail' => 'test test',
+//        ]);
     }
 
     /**

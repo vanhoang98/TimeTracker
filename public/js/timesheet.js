@@ -3,10 +3,10 @@ $(document).ready(function () {
     showEmployeeTasks();
     calendarDay();
     taskCommonAction();
-    dragDrop();
+    dragDropCreateEmployeeTask();
 });
 
-function dragDrop() {
+function dragDropCreateEmployeeTask() {
     $(".draggable").draggable({
         helper: "clone",
         revert: "invalid",
@@ -25,11 +25,6 @@ function dragDrop() {
             }
 
             var $target = $(ui.draggable);
-            // Drop task to create Event in Calendar
-            // var $newElement = $(ui.draggable.clone());
-            // var $newdiv = $('<div class="calendar-entry"></div>');
-            // $newdiv.attr('project-id', $target.attr('project-id'));
-            // $newdiv.append($newElement).append(`<p>[Project ID: `+$target.attr('project-id')+`]</p>`);
 
             var $newdiv = $(`
                 <div class="calendar-entry ui-resizable" project-id="`+$target.attr('project-id')+`">
@@ -63,13 +58,31 @@ function dragDrop() {
             $(this).append($newdiv);
 
             // Get data to create Event
-            var dataId = $target.attr('task-id');
+            var taskId = $target.attr('task-id');
             var dataYear = $(this).attr('data-year');
             var dataMoth = $(this).attr('data-month');
             var dataDay = $(this).attr('data-day');
             var dataStart = $(this).attr('data-start');
             var dataFinish = $(this).attr('data-finish');
-            createEmployeeTasksDropped(dataId, dataYear, dataMoth, dataDay, dataStart, dataFinish);
+
+            // Create Event
+            var Time_start = dataYear+"-"+dataMoth+"-"+dataDay+" "+dataStart;
+            var Time_finish = dataYear+"-"+dataMoth+"-"+dataDay+" "+dataFinish;
+            $.ajax({
+                url: "/api/employee/task",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    task_id: taskId,
+                    working_time_start: Time_start,
+                    working_time_finish: Time_finish
+                },
+                success: function (employeeTaskId) {
+                    $newdiv.find("ul.custom-menu").attr("employeetask-id", employeeTaskId);
+                    $newdiv.find("div.item-droplist").attr("employeetask-id", employeeTaskId);
+                },
+
+            });
 
             taskCommonAction();
         },
@@ -125,26 +138,6 @@ function showEmployeeTasks() {
             });
             taskCommonAction();
         }
-    });
-}
-
-function createEmployeeTasksDropped(taskId, dataYear, dataMoth, dataDay, dataStart, dataFinish) {
-
-    var Time_start = dataYear+"-"+dataMoth+"-"+dataDay+" "+dataStart;
-    var Time_finish = dataYear+"-"+dataMoth+"-"+dataDay+" "+dataFinish;
-    $.ajax({
-        url: "/api/employee/task",
-        type: "POST",
-        dataType: "json",
-        data: {
-            task_id: taskId,
-            working_time_start: Time_start,
-            working_time_finish: Time_finish
-        },
-        complete: function (result) {
-            console.log(result);
-        },
-
     });
 }
 
@@ -237,7 +230,7 @@ function switch_next_pre_week() {
 
     document.getElementById("dayOfWeek").innerHTML = list_days[0].month + '/' + list_days[0].day + ' ~ ' + list_days[6].month + '/' + list_days[6].day;
 
-    for (let i of list_days) {        
+    for (let i of list_days) {
         if (i.day === dt.getDate() && i.month === dt.getMonth() + 1 && i.year === dt.getFullYear()) {
             $('.calendar-header').append(`
                 <div class="calendar-header-cell" style="background-color: #c1ddf1" id=${i.day}>
