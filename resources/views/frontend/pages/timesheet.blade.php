@@ -74,7 +74,7 @@
                         </dl>
                     </div>
 
-                    <ul class="item-tree">
+                    <ul class="item-tree" id='external-events'>
                         @foreach($task_tree as $project)
                         <li>
                             <div class="item-dropdown" id="{{$project->id}}">{{$project->name}}</div>
@@ -91,7 +91,7 @@
         </ul>
     </div>
 
-    <div class="l-main">
+    {{-- <div class="l-main">
         <div class="l-main__container">
             <div class="l-nav-action">
                 <div class="datepicker-range">
@@ -156,5 +156,9 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+    <div>
+        <div id='calendar'></div>
     </div>
+
 </div>
