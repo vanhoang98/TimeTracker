@@ -10,9 +10,15 @@ use Illuminate\Support\Collection;
 
 class TimeSheetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $taskTree =  $this->getTaskTree();
+
         return view('frontend.layouts.master', compact('taskTree'));
     }
 
@@ -22,7 +28,7 @@ class TimeSheetController extends Controller
         $projects->map(function ($project){
             $project['children_tasks'] = $project->getTaskTree();
         });
-        return $projects;
 
+        return $projects;
     }
 }

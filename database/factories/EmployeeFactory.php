@@ -9,7 +9,7 @@ $factory->define(\App\Models\Employee::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+        'password' => bcrypt('123456'),
         'role_id' => 1,
         'date_of_birth' => $faker->dateTime,
         'sex' => 1,
