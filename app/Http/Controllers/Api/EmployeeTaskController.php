@@ -59,7 +59,7 @@ class EmployeeTaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param EmployeeTask $id
+     * @param int EmployeeTask $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -72,27 +72,39 @@ class EmployeeTaskController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param EmployeeTask $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $employee_task = DB::table('employee_task')
-            ->where('id',$id)
-            ->update([
-                'working_time_start' => $request->working_time_start,
-                'working_time_finish' => $request->working_time_finish,
-            ]);
+        try {
+            $employee_task = DB::table('employee_task')
+                ->where('id',$id)
+                ->update([
+                    'working_time_start' => $request->working_time_start,
+                    'working_time_finish' => $request->working_time_finish,
+                ]);
+        } catch (Exception $e){
+            return response()->json(['error' => 'invalid'], 401);
+        }
+        return response()->json(['success' => 'success'], 200);
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param EmployeeTask $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-         $this->employee->tasks()->wherePivot('id',$id)->detach();
+        try {
+            $this->employee->tasks()->wherePivot('id',$id)->detach();
+        } catch (Exception $e){
+            return response()->json(['error' => 'invalid'], 401);
+        }
+        return response()->json(['success' => 'success'], 200);
+
     }
 }
