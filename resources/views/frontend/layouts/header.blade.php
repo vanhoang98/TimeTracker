@@ -40,7 +40,11 @@
                         <div class="user-img icon-cmn">
                         <img src="{{ asset('images/icon-user.png') }}" alt="">
                         </div>
-                        <div class="user-name"><p>trialuser_202110-044</p></div>
+                        <div class="user-name"><p>{{ Auth::user()->name }}</p></div>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="user-name" style="color: white">Log out</button>
+                        </form>
                     </div>
                     </a>
                 </li>
