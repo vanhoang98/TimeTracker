@@ -769,6 +769,26 @@ select {
 .l-sidebar__header .h-custom-block ul li:not(:first-child) {
   margin-left: 20px;
 }
+.l-main__container .datepicker-range ul {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.l-main__container .datepicker-range ul li a {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+.l-main__container .datepicker-range ul li a img {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f0f0f0;
+}
+.l-main__container .datepicker-range ul li:not(:first-child) {
+  margin-left: 20px;
+}
 
 .l-sidebar__container {
   width: 26%;
@@ -778,7 +798,7 @@ select {
 }
 @media (min-width: 1441px) {
   .l-sidebar__container {
-    width: 23%;
+    width: 20%;
   }
 }
 .l-sidebar__item:not(:last-child) {

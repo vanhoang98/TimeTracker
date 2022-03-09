@@ -22,33 +22,35 @@ body {
 }
 
 .l-main {
-  width: 74%;
-  float: right;
+  width: 100%;
+  /* float: right; */
 }
 @media (min-width: 1441px) {
   .l-main {
-    width: 80%;
+    width: 100%;
   }
 }
 .l-main .l-nav-action {
   height: 50px;
   display: flex;
   border-bottom: 1px solid #e8e8ec;
+  padding-left: 25px;
 }
 .l-main .l-main-calendar-picker .calendar-time-col .time-wrapper .calendar-time-cell {
   padding: 0 0.7143rem;
   width: 80px;
-  height: 140px;
+  height: 100px;
   color: #999;
   border-bottom: 1px solid #c6d2d9;
 }
 .l-main .l-main-calendar-picker .calendar-header {
   display: flex;
+  overflow-y: scroll;
 }
 .l-main .l-main-calendar-picker .calendar-header .calendar-time-col {
   width: 80px;
   height: 4.2858rem;
-  background: #e4eaee;
+  background: #f0f0f0;
   border-bottom: 1px solid #c6d2d9;
 }
 .l-main .l-main-calendar-picker .calendar-header .calendar-header-cell {
@@ -58,7 +60,7 @@ body {
   justify-content: center;
   height: 4.2858rem;
   padding: 0 0.7143rem;
-  background: #e4eaee;
+  background: #f0f0f0;
   border-bottom: 1px solid #c6d2d9;
   border-left: 1px solid #c6d2d9;
   flex: 1 1 auto;
@@ -69,7 +71,6 @@ body {
 }
 .l-main .l-main-calendar-picker .calendar-body .calendar-body-wrapper {
   display: flex;
-  width: calc(100% + 17px);
 }
 .l-main .l-main-calendar-picker .calendar-body .calendar-entry-col {
   width: calc(14.28571% - 80px);
@@ -78,7 +79,7 @@ body {
   flex: 1 1 auto;
 }
 .l-main .l-main-calendar-picker .calendar-entry-cell {
-  height: 140px;
+  height: 100px;
   padding: 0 0.35715rem;
   border-bottom: 1px solid #c6d2d9;
   border-left: 1px solid #c6d2d9;
@@ -112,4 +113,9 @@ body {
 }
 .l-main .l-main-calendar-picker .daily-time-entries .calendar-entry span {
   color: #B23D65;
+}
+
+.day {
+  color: #7c8a99;
+  font-size: 20px;
 }

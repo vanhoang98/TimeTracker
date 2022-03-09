@@ -37,8 +37,8 @@
             <li class="l-sidebar__item">
                 <div class="item-head item-dropdown">マイワークアイテム</div>
                 <ul class="item-body item-root">
-                    <li class="text-ellipsis active-title">タスク①</li>
-                    <li class="text-ellipsis">タスク②</li>
+                    <li class="text-ellipsis draggable">担当中のタスク1</li>
+                    <li class="text-ellipsis draggable">担当中のタスク2</li>
                 </ul>
             </li>
 
@@ -74,204 +74,91 @@
                         </dl>
                     </div>
 
-                    <ul class="item-tree">
+                    <ul class="item-tree" id='external-events'>
+                        @foreach($task_tree as $project)
                         <li>
-                            <div class="item-dropdown active-title">プロジェクト①</div>
+                            <div class="item-dropdown" id="{{$project->id}}">{{$project->name}}</div>
                             <ul>
-                                <li class="f-size-small">
-                                    <div class="item-droplist">タスク①</div>
-                                    <ul>
-                                        <li>サブタスク①</li>
-                                        <li>サブタスク②</li>
-                                    </ul>
-                                </li>
-
-                                <li class="f-size-large">
-                                    <div class="item-droplist">タスク②</div>
-                                    <ul>
-                                        <li>
-                                            <div class="item-droplist">サブタスク①</div>
-                                            <ul>
-                                                <li>サブタスク①</li>
-                                                <li>サブタスク②</li>
-                                            </ul>
-                                        </li>
-                                        <li>サブタスク②</li>
-                                    </ul>
-                                </li>
+                                @foreach($project->children_tasks as $childTask)
+                                    @include('frontend.pages.child_task', ['child_task' => $childTask])
+                                @endforeach
                             </ul>
                         </li>
+                        @endforeach
                     </ul>
                 </div>
             </li>
         </ul>
     </div>
 
-    <div class="l-main">
+    {{-- <div class="l-main">
         <div class="l-main__container">
             <div class="l-nav-action">
-            <div class="datepicker-range">
+                <div class="datepicker-range">
+                    <ul>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="pre-week">
+                                <img src="{{ asset('images/icon-prev.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode">
+                            <a href="">
+                                <span id ='dayOfWeek'></span>
+                            </a>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="next-week">
+                                <img src="{{ asset('images/icon-next.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="">
+                                <img src="{{ asset('images/icon-calendar.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="day-calendar">
+                                <img src="{{ asset('images/icon-day.png') }}" alt="">
+                            </p>
+                        </li>
+                        <li class="manual-mode icon-cmn">
+                            <p href="" class="week-calendar">
+                                <img src="{{ asset('images/icon-week.png') }}" alt="">
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="timepicker-range">
 
-            </div>
-            <div class="timepicker-range">
+                </div>
+                <div class="list-action-outline">
 
-            </div>
-            <div class="list-action-outline">
-
-            </div>
+                </div>
             </div>
             <div class="l-main-calendar-picker">
                 <div class="calendar-header">
                     <div class="calendar-time-col"></div>
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/16</span>(日)</div>
-                        <div class="time"><span></span></div>
-                    </div>
-
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/17</span>(月)</div>
-                        <div class="time"><span></span></div>
-                    </div>
-
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/18</span>(火)</div>
-                        <div class="time"><span></span></div>
-                    </div>
-
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/19</span>(水)</div>
-                        <div class="time"><span></span></div>
-                    </div>
-
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/20</span>(木)</div>
-                        <div class="time"><span></span></div>
-                    </div>
-
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/21</span>(金)</div>
-                        <div class="time"><span></span></div>
-                    </div>
-
-                    <div class="calendar-header-cell">
-                        <div class="day"><span>1/22</span>(土)</div>
-                        <div class="time"><span></span></div>
-                    </div>
                 </div>
 
                 <div class="calendar-body">
                     <div class="calendar-body-wrapper">
                         <div class="calendar-time-col">
                             <div class="time-wrapper">
-                                <div class="calendar-time-cell"><span>01:00</span></div>
-                                <div class="calendar-time-cell"><span>09:00</span></div>
-                                <div class="calendar-time-cell"><span>10:00</span></div>
-                                <div class="calendar-time-cell"><span>11:00</span></div>
-                                <div class="calendar-time-cell"><span>13:00</span></div>
-                                <div class="calendar-time-cell"><span>17:00</span></div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="daily-time-entries">
-                                    <div class="calendar-entries-wrapper">
-                                        <div class="calendar-entry" style="height: 90px;">
-                                            <span>コープ葬祭では搬送料金もプランによっては料金に含まれています。</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                    <div class="calendar-entry-cell"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calendar-entry-col">
-                            <div class="drag-new-entry">
-                                <div class="weekly-grid">
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                    <div class="calendar-entry-cell cell-bg-grey"></div>
-                                </div>
+                                @foreach (range(0, 9) as $hour)
+                                    <div class="calendar-time-cell"><span style="float: right; font-size: 20px">0{{ $hour }}:00</span></div>
+                                @endforeach
+                                @foreach (range(10, 23) as $hour)
+                                    <div class="calendar-time-cell"><span style="float: right; font-size: 20px">{{ $hour }}:00</span></div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div> --}}
+    <div>
+        <div id='calendar'></div>
     </div>
+
 </div>

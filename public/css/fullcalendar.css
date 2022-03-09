@@ -1,0 +1,17 @@
+#calendar {
+    max-width: 1500px;
+    max-height: 670px;
+    margin: 1px 2px;
+}
+
+.calendar-entry[project-id="1"] {
+    background-color: rgb(72, 196, 121);
+}
+
+.calendar-entry[project-id="2"] {
+    background-color: rgb(202, 214, 28);
+}
+
+.calendar-entry[project-id="3"] {
+    background-color: rgb(197, 97, 97);
+}

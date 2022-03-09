@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use function GuzzleHttp\Promise\task;
 
 class Project extends Model
 {
@@ -23,4 +24,16 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function getTaskTree()
+    {
+        $tasks = $this->tasks()->whereNull('parent_task_id')
+            ->with('childrenTasks')->get();
+        return $tasks;
+    }
+
+//    public function employees()
+//    {
+//        return $this->belongsToMany(Employee::class);
+//    }
 }
