@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TimeSheetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $taskTree =  $this->getTaskTree();
