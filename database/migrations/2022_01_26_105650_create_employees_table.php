@@ -25,6 +25,7 @@ class CreateEmployeesTable extends Migration
             $table->string('department');
             $table->dateTime('breaktime_start');
             $table->dateTime('breaktime_finish');
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });

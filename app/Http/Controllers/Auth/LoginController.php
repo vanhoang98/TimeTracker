@@ -43,7 +43,9 @@ class LoginController extends Controller
             'role_id' => 1
         ];
 
-        if (Auth::attempt($loginUser)) {
+        $remember = $request->has('remember') ? true : false;
+
+        if (Auth::attempt($loginUser, $remember)) {
             return redirect()->route('timesheet');
         } else {
             return redirect()->back();

@@ -109,6 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
             $.ajax({
                 url: "/api/employee/task",
                 type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 dataType: "json",
                 data: {
                     task_id: info.event['extendedProps']['task_id'],
@@ -128,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function() {
         $.ajax({
             url: "/api/employee/task",
             type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             dataType: "json",
             data: {
                 task_id: event_info['extendedProps']['task_id'],
@@ -183,10 +189,13 @@ function updateEvent(info)
     $.ajax({
         url: "/api/employee/task/"+event_id,
         type: "PUT",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         dataType: "json",
         data: {
             working_time_start: info.event.start.toISOString().slice(0,19).replace('T',' '),
-            working_time_finish: info.event.end.toISOString().slice(0,19).replace('T',' ')
+            working_time_finish: info.event.end.toISOString().slice(0,19).replace('T',' '),
         },
         success: function (data) {
             console.log('success update');
