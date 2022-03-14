@@ -29,15 +29,15 @@ class EmployeeTaskController extends Controller
     public function store(Request $request)
     {
         $id = DB::table('employee_task')->insertGetId(
-        [
-            'employee_id' => Auth::id(),
-            'task_id' => $request->task_id,
-            'working_time_start' => $request->working_time_start,
-            'working_time_finish' => $request->working_time_finish,
-            'process_category_id' => 1,
-            'task_category_id' => 1,
-            'detail' => 'test test',
-        ]);
+            [
+                'employee_id' => Auth::id(),
+                'task_id' => $request->task_id,
+                'working_time_start' => $request->working_time_start,
+                'working_time_finish' => $request->working_time_finish,
+                'process_category_id' => 1,
+                'task_category_id' => 1,
+                'detail' => 'test test',
+            ]);
 
         return $id;
     }
@@ -58,7 +58,7 @@ class EmployeeTaskController extends Controller
                     'working_time_start' => $request->working_time_start,
                     'working_time_finish' => $request->working_time_finish,
                 ]);
-        } catch (Exception $e){
+        } catch (Exception $e) {
 
             return response()->json(['error' => 'invalid'], 401);
         }
@@ -69,12 +69,11 @@ class EmployeeTaskController extends Controller
     public function destroy($id)
     {
         try {
-            $this->employee->tasks()->wherePivot('id',  $id)->detach();
-        } catch (Exception $e){
+            $this->employee->tasks()->wherePivot('id', $id)->detach();
+        } catch (Exception $e) {
 
             return response()->json(['error' => 'invalid'], 401);
         }
-
         return response()->json(['success' => 'success'], 200);
     }
 }

@@ -1,10 +1,25 @@
+var calendar;
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var Draggable = FullCalendar.Draggable;
     var containerEl = document.getElementById('external-events');
+    var interestedList = document.getElementById('interested-tasks');
     var overlapArray = [];
 
     new Draggable(containerEl, {
+        itemSelector: '.fc-event',
+        revert: true,
+        eventData: function(eventEl) {
+            let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+            return {
+                title: eventEl.innerText,
+                task_id: dataEvent['task_id'],
+                project_id: dataEvent['project_id'],
+            };
+        }
+    });
+
+    new Draggable(interestedList, {
         itemSelector: '.fc-event',
         revert: true,
         eventData: function(eventEl) {
@@ -68,8 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 extendedProps: info.event.extendedProps,
                             })
                             createEvent(event_new);
-                    }
-                    eStart = evt.end;
+                        }
+                        eStart = evt.end;
                     }
                 }
                 if (eStart > info.event.start && eStart < eEnd) {
@@ -122,10 +137,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 success: function (data) {
                     console.log(data);
                     info.event.setProp('id',data);
+                    // info.event.addClass('hasmenu');
                     console.log(JSON.stringify(info.event));
                 }
             });
-        }
+        },
+
+        eventDidMount: function (info) {
+            info.el.addEventListener("contextmenu", function (jsEvent) {
+                var eventdetails =  calendar.getEventById(info.event.id);
+                jsEvent.preventDefault();
+                var top = jsEvent.pageY;
+                var left = jsEvent.pageX;
+                // Display contextmenu and bind event for menu click events
+                $("#contextMenu").show();
+                $("#contextMenu").css({ position: 'absolute' });
+                $("#contextMenu").offset({ left: left, top: top });
+                $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
+                    var idx = $(this).index();
+                    console.log(idx + '  ' + event.data.eventId);
+                    var eventdetails =  calendar.getEventById(event.data.eventId);
+                    switch(idx) {
+                        case 0: deleteEvent(event, eventdetails); break;
+                        case 1: setProcess(event); break;
+                        case 2: setCategory(event); break;
+                        case 3: showDetail(event); break;
+                        default:
+                    }
+                });
+                // $("#contextMenu").on("click", "li", { eventId: info.event.id }, handleSubmenu(info.event, eventdetails) );
+            });
+        },
+
+        // eventContent: function (arg) {
+        //     var event = arg.event;
+        //     console.log(JSON.stringify(event));
+        //     customHtml = event.title + `<span></span>`;
+        //     return { html: customHtml }
+        // }
     });
     function createEvent(event_info){
         $.ajax({
@@ -144,14 +193,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('success create id ' + data);
                 let event_new = calendar.getEventById(event_info.id);
                 event_new.setProp('id', data );
+                // event_new.addClass('hasmenu');
                 console.log(JSON.stringify(event_new));
             },
             error: function (data){
                 console.log('error create, revert');
             }
         });
-    }
+    };
     calendar.render();
+    dragDropInterestedTask();
 });
 
 function getAllEvents(info, successCallback, failureCallback) {
@@ -174,7 +225,8 @@ function getAllEvents(info, successCallback, failureCallback) {
                     start: start_time,
                     end: finish_time,
                     extendedProps: {
-                        'task_id': item.task_id
+                        'task_id': item.task_id,
+                        'project_id': item.project_id
                     }
                 });
             });
@@ -207,6 +259,77 @@ function updateEvent(info)
     });
 }
 
+// function handleSubmenu(event, eventdetails) {
+//     var idx = $(this).index();
+//     switch(idx) {
+//         case 0: deleteEvent(event, eventdetails); break;
+//         case 1: setProcess(event); break;
+//         case 2: setCategory(event); break;
+//         case 3: showDetail(event); break;
+//         default:
+//     }
+// }
 
+function deleteEvent(event, eventdetails) {
+    $.ajax({
+        url: "/api/employee/task/"+event.data.eventId,
+        type: "DELETE",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        dataType: "json",
+        success: function () {
+            eventdetails.remove();
+            console.log('success delete');
+        },
+        error: function (){
+            console.log('error delete, revert');
+        }
+    });
+}
 
+$(document).on("click", function (e) {
+    $("#contextMenu").hide();
+    $("#contextMenu").unbind().click(function () {});
+});
 
+function dragDropInterestedTask() {
+    $(".interest-drag").draggable({
+        helper: "clone",
+        revert: "invalid",
+        stop: function(){
+            $(this).draggable('option','revert','invalid');
+        }
+    });
+
+    $("#interested-tasks").droppable({
+        accept: '.interest-drag',
+        drop: function(event, ui) {
+            var $target = $(ui.draggable);
+            // var project_name = $target.data("event").project_id => getname;
+            var $newdiv = $(`<li>
+                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle"
+                data-event='{ "task_id": "`+$target.data("event").task_id+`", "project_id": "`+$target.data("event").project_id+`" }'>`+$target.text()+` [`+$target.data("event").project_id+`] </div>
+            </li>`);
+
+            $(this).append($newdiv);
+
+            var taskId = $target.data("event").task_id;
+            $.ajax({
+                url: "/api/employee/interested_task",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: "json",
+                data:{
+                    task_id : taskId
+                },
+                success: function (response) {
+                    console.log(response);
+                    console.log("Add interested task successfully!");
+                },
+            });
+        }
+    });
+}
