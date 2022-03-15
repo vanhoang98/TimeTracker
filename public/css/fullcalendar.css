@@ -15,3 +15,75 @@
 .calendar-entry[project-id="3"] {
     background-color: rgb(197, 97, 97);
 }
+
+.custom-menu {
+    display: none;
+    z-index: 100;
+    position: absolute;
+    overflow: visible;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+    padding: 0;
+    width: 140px;
+    font-size: 12px;
+}
+
+/* Each of the items in the list */
+.custom-menu li {
+    padding: 4px 6px;
+    cursor: pointer;
+    list-style-type: none;
+    transition: all .3s ease;
+    user-select: none;
+}
+
+.custom-menu li:hover {
+    background-color: #DEF;
+}
+
+.icon-itemMenu {
+    font-size: 18px !important;
+    padding-right: 5px;
+}
+
+.arrow-right {
+    padding-left: 43px;
+}
+
+.process-subMenu {
+    display: none;
+    z-index: 15;
+    position: absolute;
+    left: 183px;
+    top: 39px;
+    overflow: visible;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+    padding: 0;
+    width: 110px;
+}
+
+#interested-task-list {
+    padding-bottom: 20px;
+}
+
+.item-des-list {
+    font-size: 80%;
+}
+
+.item-head {
+    font-size: 100% !important;
+}
+
+.interested_list {
+    height: 100px;
+    overflow-y: scroll;
+}

@@ -18,4 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::apiResource('employee/task', 'Api\EmployeeTaskController')->middleware('employee');
+
+Route::apiResource('employee/interested_task', 'Api\EmployeeInterestedTaskController')->middleware('employee');
+

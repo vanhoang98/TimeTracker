@@ -35,10 +35,13 @@
     <div class="l-sidebar__container">
         <ul class="l-sidebar__nav">
             <li class="l-sidebar__item">
-                <div class="item-head item-dropdown">マイワークアイテム</div>
-                <ul class="item-body item-root">
-                    <li class="text-ellipsis draggable">担当中のタスク1</li>
-                    <li class="text-ellipsis draggable">担当中のタスク2</li>
+                <div class="item-head item-dropdown">気があるタスク</div>
+                <ul class="item-body item-root interested_list" id='interested-tasks'>
+                    @foreach($interested_tasks as $task)
+                        <li>
+                           <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}" }'>{{$task->name}} [{{$task->project_id}}] </div>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
 
@@ -90,8 +93,27 @@
             </li>
         </ul>
     </div>
-    
     <div>
         <div id='calendar'></div>
     </div>
+    <ul id='contextMenu' class="custom-menu" role="menu">
+        <li class="delete-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
+        <li><i class="icon-itemMenu fa fa-square"></i>工程分類<i class="arrow-right fa fa-chevron-right"></i>
+            <ul class="process-subMenu">
+                <li><a class="dropdown-item" href="#">要求分析</a></li>
+                <li><a class="dropdown-item" href="#">基本設計</a></li>
+                <li><a class="dropdown-item" href="#">開発</a></li>
+            </ul>
+        </li>
+        <li><i class="icon-itemMenu fa fa-square-o"></i>作業分類<i class="arrow-right fa fa-chevron-right"></i>
+            <ul class="process-subMenu">
+                <li><a class="dropdown-item" href="#">レビュー</a></li>
+                <li><a class="dropdown-item" href="#">手戻り</a></li>
+                <li><a class="dropdown-item" href="#">修正</a></li>
+                <li><a class="dropdown-item" href="#">管理</a></li>
+            </ul>
+        </li><hr>
+        <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
+    </ul>
+
 </div>
