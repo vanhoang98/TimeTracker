@@ -14,6 +14,7 @@
     <link rel="stylesheet" media="all" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" media="all" href="{{ asset('css/timesheet_items.css') }}">
     <link rel="stylesheet" media="all" href="{{ asset('css/fullcalendar.css') }}">
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/gif" sizes="20x20">
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>

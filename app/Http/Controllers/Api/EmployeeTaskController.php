@@ -7,6 +7,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Resources\EmployeeTask as EmployeeTaskResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeTaskController extends Controller
 {
@@ -15,30 +16,21 @@ class EmployeeTaskController extends Controller
     public function __construct()
     {
         $this->employee = Employee::find(1);
+        // $this->employee = Employee::find(Auth::id());
     }
 
-    /**
-     * Display a listing of tasks of employee.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $employee_tasks =  $this->employee->tasks()->get();
+        $employee_tasks = Employee::find(Auth::id())->tasks()->get();
+
         return EmployeeTaskResource::collection($employee_tasks);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $id = DB::table('employee_task')->insertGetId(
         [
-            'employee_id' => $this->employee->id,
+            'employee_id' => Auth::id(),
             'task_id' => $request->task_id,
             'working_time_start' => $request->working_time_start,
             'working_time_finish' => $request->working_time_finish,
@@ -46,65 +38,43 @@ class EmployeeTaskController extends Controller
             'task_category_id' => 1,
             'detail' => 'test test',
         ]);
+
         return $id;
-//        return $this->employee->tasks()->attach($request->task_id, [
-//            'working_time_start' => $request->working_time_start,
-//            'working_time_finish' => $request->working_time_finish,
-//            'process_category_id' => 1,
-//            'task_category_id' => 1,
-//            'detail' => 'test test',
-//        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int EmployeeTask $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $employee_task =  $this->employee->tasks->where('pivot.id',$id)->first();
+        $employee_task = $this->employee->tasks->where('pivot.id', $id)->first();
+
         return new EmployeeTaskResource($employee_task);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         try {
             $employee_task = DB::table('employee_task')
-                ->where('id',$id)
+                ->where('id', $id)
                 ->update([
                     'working_time_start' => $request->working_time_start,
                     'working_time_finish' => $request->working_time_finish,
                 ]);
         } catch (Exception $e){
+
             return response()->json(['error' => 'invalid'], 401);
         }
-        return response()->json(['success' => 'success'], 200);
 
+        return response()->json(['success' => 'success'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try {
-            $this->employee->tasks()->wherePivot('id',$id)->detach();
+            $this->employee->tasks()->wherePivot('id',  $id)->detach();
         } catch (Exception $e){
+
             return response()->json(['error' => 'invalid'], 401);
         }
-        return response()->json(['success' => 'success'], 200);
 
+        return response()->json(['success' => 'success'], 200);
     }
 }

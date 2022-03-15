@@ -90,75 +90,8 @@
             </li>
         </ul>
     </div>
-
-    {{-- <div class="l-main">
-        <div class="l-main__container">
-            <div class="l-nav-action">
-                <div class="datepicker-range">
-                    <ul>
-                        <li class="manual-mode icon-cmn">
-                            <p href="" class="pre-week">
-                                <img src="{{ asset('images/icon-prev.png') }}" alt="">
-                            </p>
-                        </li>
-                        <li class="manual-mode">
-                            <a href="">
-                                <span id ='dayOfWeek'></span>
-                            </a>
-                        </li>
-                        <li class="manual-mode icon-cmn">
-                            <p href="" class="next-week">
-                                <img src="{{ asset('images/icon-next.png') }}" alt="">
-                            </p>
-                        </li>
-                        <li class="manual-mode icon-cmn">
-                            <p href="" class="">
-                                <img src="{{ asset('images/icon-calendar.png') }}" alt="">
-                            </p>
-                        </li>
-                        <li class="manual-mode icon-cmn">
-                            <p href="" class="day-calendar">
-                                <img src="{{ asset('images/icon-day.png') }}" alt="">
-                            </p>
-                        </li>
-                        <li class="manual-mode icon-cmn">
-                            <p href="" class="week-calendar">
-                                <img src="{{ asset('images/icon-week.png') }}" alt="">
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="timepicker-range">
-
-                </div>
-                <div class="list-action-outline">
-
-                </div>
-            </div>
-            <div class="l-main-calendar-picker">
-                <div class="calendar-header">
-                    <div class="calendar-time-col"></div>
-                </div>
-
-                <div class="calendar-body">
-                    <div class="calendar-body-wrapper">
-                        <div class="calendar-time-col">
-                            <div class="time-wrapper">
-                                @foreach (range(0, 9) as $hour)
-                                    <div class="calendar-time-cell"><span style="float: right; font-size: 20px">0{{ $hour }}:00</span></div>
-                                @endforeach
-                                @foreach (range(10, 23) as $hour)
-                                    <div class="calendar-time-cell"><span style="float: right; font-size: 20px">{{ $hour }}:00</span></div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
     <div>
         <div id='calendar'></div>
     </div>
-
 </div>
