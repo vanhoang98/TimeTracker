@@ -54,14 +54,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         else if (eStart < evt.start) {
                             let event_new = {
-                                id: calendar.getEvents().length + 1,
+                                id: 'xxxxyyzz'+calendar.getEvents().length + 1,
                                 title: info.event.title,
                                 start: eStart,
                                 end: evt.start,
                                 extendedProps: info.event.extendedProps,
                             };
                             calendar.addEvent({
-                                id: calendar.getEvents().length + 1,
+                                id: 'xxxxyyzz'+calendar.getEvents().length + 1,
                                 title: info.event.title,
                                 start: eStart,
                                 end: evt.start,
@@ -74,14 +74,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 if (eStart > info.event.start && eStart < eEnd) {
                     let event_new = {
-                        id: calendar.getEvents().length + 1,
+                        id: 'xxxxyyzz'+calendar.getEvents().length + 1,
                         title: info.event.title,
                         start: eStart,
                         end: eEnd,
                         extendedProps: info.event.extendedProps,
                     };
                     calendar.addEvent({
-                        id: calendar.getEvents().length + 1,
+                        id: 'xxxxyyzz'+calendar.getEvents().length + 1,
                         title: info.event.title,
                         start: eStart,
                         end: eEnd,
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             success: function (data) {
                 console.log('success create id ' + data);
-                let event_new = calendar.getEventById(calendar.getEvents().length);
+                let event_new = calendar.getEventById(event_info.id);
                 event_new.setProp('id', data );
                 console.log(JSON.stringify(event_new));
             },
