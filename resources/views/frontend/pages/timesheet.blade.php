@@ -115,4 +115,7 @@
         </li><hr>
         <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
     </ul>
+    {{-- <ul id='interest-menu' class="custome-interest-menu">
+        <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
+    </ul> --}}
 </div>
