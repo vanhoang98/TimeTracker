@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         revert: true,
         eventData: function(eventEl) {
             let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+            // var title = eventEl.innerText.slice(-3);
             return {
                 title: eventEl.innerText,
                 task_id: dataEvent['task_id'],
@@ -121,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 info.event.setEnd(new Date(start_time).setHours(start_time.getHours() + 1));
                 console.log('nothing');
             }
+            console.log(start_time);
             $.ajax({
                 url: "/api/employee/task",
                 type: "POST",
@@ -172,7 +174,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // eventContent: function (arg) {
         //     var event = arg.event;
         //     console.log(JSON.stringify(event));
-        //     customHtml = event.title + `<span></span>`;
+        //     start_point = convertTime(event.start);
+        //     end_point = convertTime(event.end);
+        //     customHtml = start_point + ` - ` + end_point + `<br>` + event.title + ` [`+ event.extendedProps['project_id'] +`]`;
         //     return { html: customHtml }
         // }
     });
@@ -204,6 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
     dragDropInterestedTask();
 });
+
+function convertTime(str) {
+    var date = new Date(str),
+        hours  = ("0" + date.getHours()).slice(-2);
+        minutes = ("0" + date.getMinutes()).slice(-2);
+    return [ hours, minutes ].join(":");
+}
 
 function getAllEvents(info, successCallback, failureCallback) {
     $.ajax({
