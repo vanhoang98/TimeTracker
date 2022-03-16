@@ -115,5 +115,4 @@
         </li><hr>
         <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
     </ul>
-
 </div>
