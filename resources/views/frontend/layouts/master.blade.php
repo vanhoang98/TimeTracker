@@ -18,7 +18,7 @@
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5/main.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5/main.min.js"></script> --}}
     {{-- <script src="{{ asset('js/timesheet.js') }}"></script> --}}
     <script src="{{ asset('js/fullcalendar.js') }}"></script>
     <script src="{{ asset('js/timesheet_page.js') }}"></script>

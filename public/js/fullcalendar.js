@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         revert: true,
         eventData: function(eventEl) {
             let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
-            // var title = eventEl.innerText.slice(-3);
             return {
                 title: eventEl.innerText,
                 task_id: dataEvent['task_id'],
@@ -152,7 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 var top = jsEvent.pageY;
                 var left = jsEvent.pageX;
                 // Display contextmenu and bind event for menu click events
-                $("#contextMenu").show();
+                // var contextMenu =
+                $("#contextMenu").finish().slideDown('fast');
                 $("#contextMenu").css({ position: 'absolute' });
                 $("#contextMenu").offset({ left: left, top: top });
                 $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
@@ -171,14 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         },
 
-        // eventContent: function (arg) {
-        //     var event = arg.event;
-        //     console.log(JSON.stringify(event));
-        //     start_point = convertTime(event.start);
-        //     end_point = convertTime(event.end);
-        //     customHtml = start_point + ` - ` + end_point + `<br>` + event.title + ` [`+ event.extendedProps['project_id'] +`]`;
-        //     return { html: customHtml }
-        // }
     });
     function createEvent(event_info){
         $.ajax({
@@ -206,15 +198,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     calendar.render();
-    dragDropInterestedTask();
+    myTaskFunction();
 });
-
-function convertTime(str) {
-    var date = new Date(str),
-        hours  = ("0" + date.getHours()).slice(-2);
-        minutes = ("0" + date.getMinutes()).slice(-2);
-    return [ hours, minutes ].join(":");
-}
 
 function getAllEvents(info, successCallback, failureCallback) {
     $.ajax({
@@ -232,7 +217,7 @@ function getAllEvents(info, successCallback, failureCallback) {
                 finish_time = finish_time.toISOString();
                 events.push({
                     id: item.id,
-                    title: item.task_name,
+                    title: item.task_name + ` [`+ item.project_id +`]`,
                     start: start_time,
                     end: finish_time,
                     extendedProps: {
@@ -270,17 +255,6 @@ function updateEvent(info)
     });
 }
 
-// function handleSubmenu(event, eventdetails) {
-//     var idx = $(this).index();
-//     switch(idx) {
-//         case 0: deleteEvent(event, eventdetails); break;
-//         case 1: setProcess(event); break;
-//         case 2: setCategory(event); break;
-//         case 3: showDetail(event); break;
-//         default:
-//     }
-// }
-
 function deleteEvent(event, eventdetails) {
     $.ajax({
         url: "/api/employee/task/"+event.data.eventId,
@@ -304,7 +278,8 @@ $(document).on("click", function (e) {
     $("#contextMenu").unbind().click(function () {});
 });
 
-function dragDropInterestedTask() {
+// Function for list of my tasks
+function myTaskFunction() {
     $(".interest-drag").draggable({
         helper: "clone",
         revert: "invalid",
@@ -317,14 +292,14 @@ function dragDropInterestedTask() {
         accept: '.interest-drag',
         drop: function(event, ui) {
             var $target = $(ui.draggable);
-            // var project_name = $target.data("event").project_id => getname;
             var $newdiv = $(`<li>
-                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle"
+                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task"
                 data-event='{ "task_id": "`+$target.data("event").task_id+`", "project_id": "`+$target.data("event").project_id+`" }'>`+$target.text()+` [`+$target.data("event").project_id+`] </div>
+                <ul id='interest-menu' class="custome-interest-menu"  task-id="`+ $target.data("event").task_id +`">
+                    <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+                </ul>
             </li>`);
-
             $(this).append($newdiv);
-
             var taskId = $target.data("event").task_id;
             $.ajax({
                 url: "/api/employee/interested_task",
@@ -333,14 +308,60 @@ function dragDropInterestedTask() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 dataType: "json",
-                data:{
-                    task_id : taskId
-                },
+                data: {task_id : taskId},
                 success: function (response) {
                     console.log(response);
                     console.log("Add interested task successfully!");
                 },
+                error: function (response){
+                    console.log(response);
+                    $newdiv.remove();
+                }
             });
+            subMenuMyTask();
         }
+    });
+
+    subMenuMyTask();
+}
+
+// Show submenu and delete function for tasks in My Tasks list
+function subMenuMyTask() {
+    $(".interested-task").bind("contextmenu", function (event) {
+        event.preventDefault();
+        $('.custome-interest-menu').hide();
+        var x = event.offsetX;
+        var y = event.offsetY;
+        var taskId = $(this).data("event").task_id;
+        var $subMenu = $(`.custome-interest-menu[task-id=`+ taskId +`]`);
+        $subMenu.finish().slideDown('fast');
+        $subMenu.css({left: x + "px", top: y + "px"});
+    });
+
+    // Delete my Task
+    $(".delete-interest-task").click(function(){
+        var $eleParent_ul =  $(this).parent();
+        var $eleGrandParent = $eleParent_ul.parent();
+        var taskId = $eleParent_ul.attr("task-id");
+        $eleGrandParent.remove();
+        $.ajax({
+            url: "/api/employee/interested_task/" + taskId,
+            type: "DELETE",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function () {
+                $eleGrandParent.remove();
+                console.log('success delete');
+            },
+            error: function (){
+                console.log('error delete, revert');
+            }
+        });
+    });
+
+    $(document).bind("click", function(e) {
+        $('.custome-interest-menu').hide();
     });
 }
