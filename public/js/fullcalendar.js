@@ -321,7 +321,6 @@ function myTaskFunction() {
             subMenuMyTask();
         }
     });
-
     subMenuMyTask();
 }
 
