@@ -79,8 +79,10 @@
                         <li>
                             <div class="item-dropdown" id="{{$project->id}}">{{$project->name}}</div>
                             <ul>
-                                @foreach($project->children_tasks as $childTask)
+                                @foreach($project->tasks as $childTask)
+                                    <li class="f-size-small" >
                                     @include('frontend.pages.child_task', ['child_task' => $childTask])
+                                    </li>
                                 @endforeach
                             </ul>
                         </li>
@@ -90,7 +92,7 @@
             </li>
         </ul>
     </div>
-    
+
     <div>
         <div id='calendar'></div>
     </div>

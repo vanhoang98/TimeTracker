@@ -27,8 +27,11 @@ class Project extends Model
 
     public function getTaskTree()
     {
-        $tasks = $this->tasks()->whereNull('parent_task_id')
-            ->with('childrenTasks')->get();
+//        $tasks = $this->tasks()->whereNull('pare
+//]nt_task_id')
+//            ->with('childrenTasks')->get();
+//        return $tasks;
+        $tasks = $this->tasks()->get()->toTree();
         return $tasks;
     }
 

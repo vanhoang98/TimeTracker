@@ -15,11 +15,10 @@ class TimeSheetController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function index()
     {
         $taskTree =  $this->getTaskTree();
-        
         return view('frontend.layouts.master', compact('taskTree'));
     }
 
@@ -27,7 +26,7 @@ class TimeSheetController extends Controller
     {
         $projects = Employee::find(Auth::id())->projects;
         $projects->map(function ($project){
-            $project['children_tasks'] = $project->getTaskTree();
+            $project['tasks'] = $project->getTaskTree();
         });
 
         return $projects;

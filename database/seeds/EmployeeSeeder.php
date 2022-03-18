@@ -25,6 +25,30 @@ class EmployeeSeeder extends Seeder
             'breaktime_start' => Carbon::now(),
             'breaktime_finish' => Carbon::now()
         ]);
+        App\Models\Employee::create([
+            'name' => 'CCC TEST 2',
+            'email' => 'ccctest2@ccc.jp',
+            'password' => Hash::make('123456'),
+            'role_id' => 1,
+            'date_of_birth' => Carbon::now(),
+            'sex' => 1,
+            'address' => 'JP',
+            'department' => "TSUTAYA IT",
+            'breaktime_start' => Carbon::now(),
+            'breaktime_finish' => Carbon::now()
+        ]);
+        App\Models\Employee::create([
+            'name' => 'CCC TEST 3',
+            'email' => 'ccctest3@ccc.jp',
+            'password' => Hash::make('123456'),
+            'role_id' => 1,
+            'date_of_birth' => Carbon::now(),
+            'sex' => 1,
+            'address' => 'JP',
+            'department' => "TSUTAYA IT",
+            'breaktime_start' => Carbon::now(),
+            'breaktime_finish' => Carbon::now()
+        ]);
         factory(\App\Models\Employee::class, 5)->create()
         ->each(function ($employee){
             for ($i= 1; $i <=5; $i++){

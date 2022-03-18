@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: eventEl.innerText,
                 task_id: dataEvent['task_id'],
                 project_id: dataEvent['project_id'],
+                is_last_child: dataEvent['last_child']
             };
         }
     });
@@ -98,33 +99,41 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         eventReceive: function(info) {
-            tzoffset = (new Date()).getTimezoneOffset() * 60000;
-            start_time = new Date(info.event.start);
-            end_time = new Date(new Date(start_time).setHours(start_time.getHours() + 1));
-            console.log(JSON.stringify(info.event));
-            if (!info.event.end){
-                info.event.setEnd(new Date(start_time).setHours(start_time.getHours() + 1));
-                console.log('nothing');
-            }
-            $.ajax({
-                url: "/api/employee/task",
-                type: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                dataType: "json",
-                data: {
-                    task_id: info.event['extendedProps']['task_id'],
-                    // project_id: info.event['extendedProps']['project_id'],
-                    working_time_start: (start_time).toISOString().slice(0,19).replace('T',' '),
-                    working_time_finish: (end_time).toISOString().slice(0,19).replace('T',' ')
-                },
-                success: function (data) {
-                    console.log(data);
-                    info.event.setProp('id',data);
-                    console.log(JSON.stringify(info.event));
+            console.log(info.event['extendedProps']['is_last_child']);
+            if (info.event['extendedProps']['is_last_child']){
+                tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                start_time = new Date(info.event.start);
+                end_time = new Date(new Date(start_time).setHours(start_time.getHours() + 1));
+                console.log(JSON.stringify(info.event));
+                if (!info.event.end){
+                    info.event.setEnd(new Date(start_time).setHours(start_time.getHours() + 1));
+                    console.log('nothing');
                 }
-            });
+                $.ajax({
+                    url: "/api/employee/task",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: "json",
+                    data: {
+                        task_id: info.event['extendedProps']['task_id'],
+                        // project_id: info.event['extendedProps']['project_id'],
+                        working_time_start: (start_time).toISOString().slice(0,19).replace('T',' '),
+                        working_time_finish: (end_time).toISOString().slice(0,19).replace('T',' ')
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        info.event.setProp('id',data);
+                        console.log(JSON.stringify(info.event));
+                    }
+                });
+            }
+            else
+            {
+                info.revert();
+            }
+
         }
     });
     function createEvent(event_info){
