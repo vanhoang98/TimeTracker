@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: eventEl.innerText,
                 task_id: dataEvent['task_id'],
                 project_id: dataEvent['project_id'],
+                is_last_child: dataEvent['last_child']
             };
         }
     });
@@ -113,68 +114,42 @@ document.addEventListener('DOMContentLoaded', function() {
         },
 
         eventReceive: function(info) {
-            tzoffset = (new Date()).getTimezoneOffset() * 60000;
-            start_time = new Date(info.event.start);
-            end_time = new Date(new Date(start_time).setHours(start_time.getHours() + 1));
-            console.log(JSON.stringify(info.event));
-            if (!info.event.end){
-                info.event.setEnd(new Date(start_time).setHours(start_time.getHours() + 1));
-                console.log('nothing');
-            }
-            $.ajax({
-                url: "/api/employee/task",
-                type: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                dataType: "json",
-                data: {
-                    task_id: info.event['extendedProps']['task_id'],
-                    // project_id: info.event['extendedProps']['project_id'],
-                    working_time_start: (start_time).toISOString().slice(0,19).replace('T',' '),
-                    working_time_finish: (end_time).toISOString().slice(0,19).replace('T',' ')
-                },
-                success: function (data) {
-                    console.log(data);
-                    info.event.setProp('id',data);
-                    // info.event.addClass('hasmenu');
-                    console.log(JSON.stringify(info.event));
+            console.log(info.event['extendedProps']['is_last_child']);
+            if (info.event['extendedProps']['is_last_child']){
+                tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                start_time = new Date(info.event.start);
+                end_time = new Date(new Date(start_time).setHours(start_time.getHours() + 1));
+                console.log(JSON.stringify(info.event));
+                if (!info.event.end){
+                    info.event.setEnd(new Date(start_time).setHours(start_time.getHours() + 1));
+                    console.log('nothing');
                 }
-            });
-        },
-
-        eventDidMount: function (info) {
-            info.el.addEventListener("contextmenu", function (jsEvent) {
-                var eventdetails =  calendar.getEventById(info.event.id);
-                jsEvent.preventDefault();
-                var top = jsEvent.pageY;
-                var left = jsEvent.pageX;
-                // Display contextmenu and bind event for menu click events
-                $("#contextMenu").show();
-                $("#contextMenu").css({ position: 'absolute' });
-                $("#contextMenu").offset({ left: left, top: top });
-                $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
-                    var idx = $(this).index();
-                    console.log(idx + '  ' + event.data.eventId);
-                    var eventdetails =  calendar.getEventById(event.data.eventId);
-                    switch(idx) {
-                        case 0: deleteEvent(event, eventdetails); break;
-                        case 1: setProcess(event); break;
-                        case 2: setCategory(event); break;
-                        case 3: showDetail(event); break;
-                        default:
+                $.ajax({
+                    url: "/api/employee/task",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: "json",
+                    data: {
+                        task_id: info.event['extendedProps']['task_id'],
+                        // project_id: info.event['extendedProps']['project_id'],
+                        working_time_start: (start_time).toISOString().slice(0,19).replace('T',' '),
+                        working_time_finish: (end_time).toISOString().slice(0,19).replace('T',' ')
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        info.event.setProp('id',data);
+                        console.log(JSON.stringify(info.event));
                     }
                 });
-                // $("#contextMenu").on("click", "li", { eventId: info.event.id }, handleSubmenu(info.event, eventdetails) );
-            });
-        },
+            }
+            else
+            {
+                info.revert();
+            }
 
-        // eventContent: function (arg) {
-        //     var event = arg.event;
-        //     console.log(JSON.stringify(event));
-        //     customHtml = event.title + `<span></span>`;
-        //     return { html: customHtml }
-        // }
+        }
     });
     function createEvent(event_info){
         $.ajax({

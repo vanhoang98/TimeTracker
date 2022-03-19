@@ -26,8 +26,8 @@ class TimeSheetController extends Controller
     public function getTaskTree()
     {
         $projects = Employee::find(Auth::id())->projects;
-        $projects->map(function ($project) {
-            $project['children_tasks'] = $project->getTaskTree();
+        $projects->map(function ($project){
+            $project['tasks'] = $project->getTaskTree();
         });
 
         return $projects;
