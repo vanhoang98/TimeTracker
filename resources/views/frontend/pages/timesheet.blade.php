@@ -99,10 +99,6 @@
             </li>
         </ul>
     </div>
-<<<<<<< HEAD
-=======
-
->>>>>>> 307487637d14bdd7527caac5db19e3de3c5cefbe
     <div>
         <div id='calendar'></div>
     </div>
