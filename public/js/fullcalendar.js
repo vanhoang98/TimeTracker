@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var containerEl = document.getElementById('external-events');
     var interestedList = document.getElementById('interested-tasks');
     var overlapArray = [];
+    var contextMenuEl = {};
 
     new Draggable(containerEl, {
         itemSelector: '.fc-event',
@@ -140,35 +141,86 @@ document.addEventListener('DOMContentLoaded', function() {
                     info.event.setProp('id',data);
                     // info.event.addClass('hasmenu');
                     console.log(JSON.stringify(info.event));
+                    //test
+                    contextMenuEl.oncontextmenu = function (jsEvent) {
+                        jsEvent.preventDefault();
+                        var top = jsEvent.pageY;
+                        var left = jsEvent.pageX;
+                        // Display contextmenu and bind event for menu click events
+                        // var contextMenu =
+                        $("#contextMenu").finish().slideDown('fast');
+                        $("#contextMenu").css({ position: 'absolute' });
+                        $("#contextMenu").offset({ left: left, top: top });
+                        $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
+                            var idx = $(this).index();
+                            var eventdetails =  calendar.getEventById(event.data.eventId);
+                            switch(idx) {
+                                case 0: deleteEvent(event, eventdetails); break;
+                                case 1: setProcess(event); break;
+                                case 2: setCategory(event); break;
+                                case 3: showDetail(event); break;
+                                default:
+                            }
+                        });
+                        // $("#contextMenu").on("click", "li", { eventId: info.event.id }, handleSubmenu(info.event, eventdetails) );
+                    };
+
+
                 }
             });
         },
 
         eventDidMount: function (info) {
-            info.el.addEventListener("contextmenu", function (jsEvent) {
-                var eventdetails =  calendar.getEventById(info.event.id);
-                jsEvent.preventDefault();
-                var top = jsEvent.pageY;
-                var left = jsEvent.pageX;
-                // Display contextmenu and bind event for menu click events
-                // var contextMenu =
-                $("#contextMenu").finish().slideDown('fast');
-                $("#contextMenu").css({ position: 'absolute' });
-                $("#contextMenu").offset({ left: left, top: top });
-                $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
-                    var idx = $(this).index();
-                    console.log(idx + '  ' + event.data.eventId);
-                    var eventdetails =  calendar.getEventById(event.data.eventId);
-                    switch(idx) {
-                        case 0: deleteEvent(event, eventdetails); break;
-                        case 1: setProcess(event); break;
-                        case 2: setCategory(event); break;
-                        case 3: showDetail(event); break;
-                        default:
-                    }
-                });
-                // $("#contextMenu").on("click", "li", { eventId: info.event.id }, handleSubmenu(info.event, eventdetails) );
-            });
+            // console.log(typeof(info.el));
+            contextMenuEl = info.el;
+            // info.el.addEventListener("contextmenu", function (jsEvent) {
+            //
+            //     var eventdetails =  calendar.getEventById(info.event.id);
+            //     console.log('ctx menu id '+info.event.id);
+            //     jsEvent.preventDefault();
+            //     var top = jsEvent.pageY;
+            //     var left = jsEvent.pageX;
+            //     // Display contextmenu and bind event for menu click events
+            //     // var contextMenu =
+            //     $("#contextMenu").finish().slideDown('fast');
+            //     $("#contextMenu").css({ position: 'absolute' });
+            //     $("#contextMenu").offset({ left: left, top: top });
+            //     $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
+            //         var idx = $(this).index();
+            //         console.log(idx + '  ' + event.data.eventId);
+            //         var eventdetails =  calendar.getEventById(event.data.eventId);
+            //         switch(idx) {
+            //             case 0: deleteEvent(event, eventdetails); break;
+            //             case 1: setProcess(event); break;
+            //             case 2: setCategory(event); break;
+            //             case 3: showDetail(event); break;
+            //             default:
+            //         }
+            //     });
+            //     // $("#contextMenu").on("click", "li", { eventId: info.event.id }, handleSubmenu(info.event, eventdetails) );
+            // });
+            info.el.oncontextmenu = function (jsEvent) {
+                    jsEvent.preventDefault();
+                    var top = jsEvent.pageY;
+                    var left = jsEvent.pageX;
+                    // Display contextmenu and bind event for menu click events
+                    // var contextMenu =
+                    $("#contextMenu").finish().slideDown('fast');
+                    $("#contextMenu").css({ position: 'absolute' });
+                    $("#contextMenu").offset({ left: left, top: top });
+                    $("#contextMenu").on("click", "li", { eventId: info.event.id }, function(event) {
+                        var idx = $(this).index();
+                        var eventdetails =  calendar.getEventById(event.data.eventId);
+                        switch(idx) {
+                            case 0: deleteEvent(event, eventdetails); break;
+                            case 1: setProcess(event); break;
+                            case 2: setCategory(event); break;
+                            case 3: showDetail(event); break;
+                            default:
+                        }
+                    });
+                    // $("#contextMenu").on("click", "li", { eventId: info.event.id }, handleSubmenu(info.event, eventdetails) );
+                }
         },
 
     });
