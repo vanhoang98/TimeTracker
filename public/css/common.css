@@ -652,12 +652,12 @@ select {
   white-space: nowrap;
 }
 
-.l-sidebar__item .item-tree > li > div, .l-sidebar__item .item-tree .f-size-large > ul > li > ul > li, .l-sidebar__item .item-tree .f-size-large > ul > li, .l-sidebar__item .item-tree .f-size-large > div, .l-sidebar__item .item-tree .f-size-small > ul > li, .l-sidebar__item .item-tree .f-size-small > div {
+.l-sidebar__item .item-tree > li > div, .l-sidebar__item .item-tree .f-size-large > ul > li > ul > li, .l-sidebar__item .item-tree .f-size-large > ul > li, .l-sidebar__item .item-tree .f-size-large > div, .l-sidebar__item .item-tree .f-size-small > ul > li > ul > li, .l-sidebar__item .item-tree .f-size-small > ul > li, .l-sidebar__item .item-tree .f-size-small > div {
   cursor: pointer;
   position: relative;
 }
 .l-sidebar__item .item-tree > li > div::before, .l-sidebar__item .item-tree .f-size-large > ul > li > ul > li::before, .l-sidebar__item .item-tree .f-size-large > ul > li::before, .l-sidebar__item .item-tree .f-size-large > div::before, .l-sidebar__item .item-tree .f-size-small > ul > li::before, .l-sidebar__item .item-tree .f-size-small > div::before {
-  content: "";
+  /* content: ""; */
   width: 24px;
   height: 24px;
   background-image: url(../images/icon-folder-small.png);
@@ -669,13 +669,14 @@ select {
   transform: translateY(-50%);
 }
 
-.l-sidebar__item .item-tree > li > ul > li > ul > li > div, .l-sidebar__item .item-tree > li > ul > li > div, .l-sidebar__item .item-tree > li > div {
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li > div, .l-sidebar__item .item-tree > li > ul > li > ul > li > div, .l-sidebar__item .item-tree > li > ul > li > div, .l-sidebar__item .item-tree > li > div {
   position: relative;
 }
-.l-sidebar__item .item-tree > li > ul > li > ul > li > div::after, .l-sidebar__item .item-tree > li > ul > li > div::after, .l-sidebar__item .item-tree > li > div::after {
+
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li > div::after, .l-sidebar__item .item-tree > li > ul > li > ul > li > div::after, .l-sidebar__item .item-tree > li > ul > li > div::after, .l-sidebar__item .item-tree > li > div::after {
   content: "";
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   background-image: url(../images/icon-next-arrow.png);
   background-size: cover;
   background-repeat: no-repeat;
@@ -686,7 +687,7 @@ select {
   transition: 0.3s;
 }
 
-.l-sidebar__item .item-tree > li > ul > li > ul > li > div, .l-sidebar__item .item-tree > li > ul > li > div, .l-sidebar__item .item-tree > li > div {
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li > div, .l-sidebar__item .item-tree > li > ul > li > ul > li > div, .l-sidebar__item .item-tree > li > ul > li > div, .l-sidebar__item .item-tree > li > div {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -885,6 +886,9 @@ select {
 .l-sidebar__item .item-tree .f-size-small > ul > li:before {
   left: 20%;
 }
+.l-sidebar__item .item-tree .f-size-small > ul > li > ul > li:before {
+  left: 24%;
+}
 .l-sidebar__item .item-tree .f-size-large > div::before {
   background-image: url(../images/icon-folder-large.png);
 }
@@ -896,13 +900,13 @@ select {
   left: 26%;
 }
 .l-sidebar__item .item-tree > li > div {
-  text-indent: 17%;
+  text-indent: 8%;
   padding-right: 1%;
   margin-bottom: 7px;
 }
 .l-sidebar__item .item-tree > li > div::before {
-  background-image: url(../images/icon-folder-root.png);
-  top: 57%;
+  background-image: url(../images/project.png);
+  top: 50%;
   left: 8%;
 }
 .l-sidebar__item .item-tree > li > div:after {
@@ -912,29 +916,44 @@ select {
   transform: translateY(-50%) rotate(0);
 }
 .l-sidebar__item .item-tree > li > ul > li > div {
-  text-indent: 25%;
+  text-indent: 14%;
   padding-right: 1%;
   margin-bottom: 7px;
 }
 .l-sidebar__item .item-tree > li > ul > li > div:after {
-  left: 9%;
+  left: 7%;
 }
 .l-sidebar__item .item-tree > li > ul > li > div.active-arrow:after {
   transform: translateY(-50%) rotate(90deg);
 }
 .l-sidebar__item .item-tree > li > ul > li > ul > li {
-  text-indent: 29%;
+  text-indent: 19%;
+  padding-right: 1%;
+  margin-bottom: 7px;
+}
+.l-sidebar__item .item-tree > li > ul > li > ul > li > div {
   padding-right: 1%;
   margin-bottom: 7px;
 }
 .l-sidebar__item .item-tree > li > ul > li > ul > li > div:after {
-  left: 14%;
+  left: 12%;
 }
 .l-sidebar__item .item-tree > li > ul > li > ul > li > div.active-arrow:after {
   transform: translateY(-50%) rotate(90deg);
 }
-.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li {
-  text-indent: 35%;
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li {  
+  text-indent: 21%;
+  padding-right: 1%;
+  margin-bottom: 7px;
+}
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li > div:after {
+  left: 17%;
+}
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li > div.active-arrow:after {
+  transform: translateY(-50%) rotate(90deg);
+}
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li > ul > li {
+  text-indent: 41%;
   padding-right: 1%;
   margin-bottom: 7px;
 }
