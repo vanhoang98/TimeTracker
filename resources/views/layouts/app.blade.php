@@ -23,7 +23,7 @@
 </head>
 <body>
     <div id="app" style="height: 100vh">
-        <main class="py-4" style="height: 100%">
+        <main class="py-4 login-center">
             @yield('content')
         </main>
     </div>

@@ -20,9 +20,9 @@ class CreateTasksTable extends Migration
                 ->references('id')->on('projects')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->integer('parent_task_id')->unsigned()->nullable();
-            $table->foreign('parent_task_id')
-                ->references('id')->on('tasks');
+//            $table->integer('parent_task_id')->unsigned()->nullable();
+//            $table->foreign('parent_task_id')
+//                ->references('id')->on('tasks');
             $table->integer('number_item');
             $table->tinyInteger('status');
             $table->string('leader');
@@ -32,6 +32,7 @@ class CreateTasksTable extends Migration
             $table->integer('actual_work_in_time');
             $table->integer('progress');
             $table->text('description');
+            $table->nestedSet();
             $table->timestamps();
             $table->softDeletes();
         });

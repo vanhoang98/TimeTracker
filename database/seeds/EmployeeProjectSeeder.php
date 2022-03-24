@@ -15,5 +15,17 @@ class EmployeeProjectSeeder extends Seeder
         $employee->projects()->attach(1);
         $employee->projects()->attach(2);
         $employee->projects()->attach(3);
+        $employee = \App\Models\Employee::find(2);
+        $employee->projects()->attach(1);
+//        $employee->projects()->attach(2);
+        $employee->projects()->attach(3);
+        $employee = \App\Models\Employee::find(3);
+        $employee->projects()->attach(1);
+        $employee->projects()->attach(2);
+//        $employee->projects()->attach(3);
+        $employee = \App\Models\Employee::find(4);
+//        $employee->projects()->attach(1);
+        $employee->projects()->attach(2);
+        $employee->projects()->attach(3);
     }
 }

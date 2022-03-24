@@ -80,10 +80,16 @@
                     <ul class="item-tree" id='external-events'>
                         @foreach($task_tree as $project)
                         <li>
-                            <div class="item-dropdown" id="{{$project->id}}">{{$project->name}}</div>
+                            <div class="item-dropdown" id="{{$project->id}}">
+                                <img src="{{ asset('images/icon-project.png') }}" style="width: 21px;
+                                padding-bottom: 3px;" alt="">
+                                <span>{{$project->name}}</span>
+                            </div>
                             <ul>
-                                @foreach($project->children_tasks as $childTask)
-                                    @include('frontend.pages.child_task', ['child_task' => $childTask])
+                                @foreach($project->tasks as $childTask)
+                                    <li>
+                                        @include('frontend.pages.child_task', ['child_task' => $childTask])
+                                    </li>
                                 @endforeach
                             </ul>
                         </li>
@@ -115,5 +121,4 @@
         </li><hr>
         <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
     </ul>
-
 </div>

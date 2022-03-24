@@ -51,13 +51,31 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.text-white-bold {
+  color: white !important;
+}
+
+.login-button {
+  border-radius: 50px !important;
+  width: 25% !important;
+  background: #29607e !important;
+  border: 2px solid #5499ba !important;
+}
+
+.login-center {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 article,
 aside,
 figcaption,
 figure,
 footer,
 header,
-hgroup,
+hgroup,y
 main,
 nav,
 section {
@@ -72,7 +90,7 @@ body {
   line-height: 1.6;
   color: #212529;
   text-align: left;
-  background-color: #f8fafc;
+  background-color: #0d3247;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
