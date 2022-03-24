@@ -29,7 +29,7 @@
     border-radius: 5px;
     padding: 0;
     width: 140px;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 /* Each of the items in the list */
@@ -86,4 +86,42 @@
 .interested_list {
     height: 100px;
     overflow-y: scroll;
+    padding-bottom: 20px !important;
+}
+
+.custome-interest-menu {
+    display: none;
+    z-index: 100;
+    position: absolute;
+    overflow: visible;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+    padding: 0;
+    width: 100px;
+    font-size: 15px;
+}
+
+/* Each of the items in the list */
+.custome-interest-menu li {
+    padding: 4px 6px;
+    cursor: pointer;
+    list-style-type: none;
+    transition: all .3s ease;
+    user-select: none;
+}
+
+.custome-interest-menu li:hover {
+    background-color: #DEF;
+}
+
+.custome-interest-menu li:after {
+    background-image: none !important;
+}
+
+.interested-task:hover {
+    background-color: rgb(186, 209, 231);
 }

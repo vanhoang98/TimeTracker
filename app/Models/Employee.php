@@ -44,6 +44,6 @@ class Employee extends Authenticatable
 
     public function interestedTasks()
     {
-        return $this->belongsToMany(Task::class, 'employee_interested_tasks','employee_id','task_id');
+        return $this->belongsToMany(Task::class, 'employee_interested_tasks','employee_id','task_id')->withPivot('is_last_child');
     }
 }
