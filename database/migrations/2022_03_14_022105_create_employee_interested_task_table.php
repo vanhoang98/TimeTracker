@@ -23,6 +23,7 @@ class CreateEmployeeInterestedTaskTable extends Migration
             $table->foreign('task_id')
                 ->references('id')->on('tasks')
                 ->onDelete('cascade');
+            $table->boolean('is_last_child');
             $table->timestamps();
             $table->softDeletes();
         });

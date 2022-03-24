@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EmployeeInterestedTaskController extends Controller
 {
+    private $employee;
+
+    public function __construct()
+    {
+        $this->employee = Employee::find(1);
+        // $this->employee = Employee::find(Auth::id());
+    }
+
     /**
      * Add the interested task from task tree.
      *
@@ -17,9 +25,21 @@ class EmployeeInterestedTaskController extends Controller
      */
     public function store(Request $request)
     {
+        $check = $this->employee->interestedTasks()->where('task_id', $request->task_id)->first();
+        if ($check != null) {
+            return response()->json(['error' => 'invalid'], 401);
+        }
+        $this->employee->interestedTasks()->syncWithoutDetaching([$request->task_id => ['is_last_child' => $request->is_last_child]]);
+        return response()->json(['success' => 'success'], 200);
+
+    }
+
+    public function destroy($id)
+    {
         try {
-            DB::insert('insert into employee_interested_tasks (employee_id, task_id) values (?, ?)', [Auth::id(), $request->task_id]);
-        } catch (Exception $e){
+            $this->employee->interestedTasks()->detach($id);
+        } catch (Exception $e) {
+
             return response()->json(['error' => 'invalid'], 401);
         }
         return response()->json(['success' => 'success'], 200);

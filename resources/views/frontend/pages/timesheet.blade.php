@@ -35,11 +35,14 @@
     <div class="l-sidebar__container">
         <ul class="l-sidebar__nav">
             <li class="l-sidebar__item">
-                <div class="item-head item-dropdown">気があるタスク</div>
+                <div class="item-head item-dropdown">マイタスク</div>
                 <ul class="item-body item-root interested_list" id='interested-tasks'>
                     @foreach($interested_tasks as $task)
                         <li>
-                           <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}" }'>{{$task->name}} [{{$task->project_id}}] </div>
+                            <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}} [{{$task->project_id}}] </div>
+                            <ul id='interest-menu' class="custome-interest-menu"  task-id="{{ $task->id }}">
+                                <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+                            </ul>
                         </li>
                     @endforeach
                 </ul>
@@ -85,7 +88,7 @@
                                 padding-bottom: 3px;" alt="">
                                 <span>{{$project->name}}</span>
                             </div>
-                            <ul>
+                            <ul style="display : none">
                                 @foreach($project->tasks as $childTask)
                                     <li>
                                         @include('frontend.pages.child_task', ['child_task' => $childTask])
