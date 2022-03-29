@@ -1,0 +1,12 @@
+.l-sub_task::after {
+    background-image: url(../images/icon-task.png) !important;
+    background-size: contain !important;
+    width: 25px !important;
+    padding: 4px !important;
+}
+.l-last_task::after {
+    background-image: url(../images/icon-last-task.png) !important;
+    background-size: contain !important;
+    width: 25px !important;
+    padding: 4px !important;
+}

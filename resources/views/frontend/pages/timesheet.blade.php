@@ -38,12 +38,21 @@
                 <div class="item-head item-dropdown">マイタスク</div>
                 <ul class="item-body item-root interested_list" id='interested-tasks'>
                     @foreach($interested_tasks as $task)
-                        <li>
-                            <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}} [{{$task->project_id}}] </div>
-                            <ul id='interest-menu' class="custome-interest-menu"  task-id="{{ $task->id }}">
-                                <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
-                            </ul>
-                        </li>
+                        @if($task->pivot->is_last_child == 0)
+                            <li class="l-sub_task">
+                                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}} [{{$task->project_id}}] </div>
+                                <ul id='interest-menu' class="custome-interest-menu"  task-id="{{ $task->id }}">
+                                        <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+                                </ul>
+                            </li>
+                        @else
+                            <li class="l-last_task">
+                                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}} [{{$task->project_id}}] </div>
+                                <ul id='interest-menu' class="custome-interest-menu"  task-id="{{ $task->id }}">
+                                    <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+                                </ul>
+                            </li>
+                        @endif
                     @endforeach
                 </ul>
             </li>

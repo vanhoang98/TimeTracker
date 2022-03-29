@@ -290,13 +290,26 @@ function myTaskFunction() {
             console.log($target.data("event"))
             var taskId = $target.data("event").task_id;
             var isLastChild = $target.data("event").last_child;
-            var $newdiv = $(`<li>
+
+            if ($target.data("event").last_child == 0) {
+                var $newdiv = $(`<li class="l-sub_task">
                 <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task"
                 data-event='{ "task_id": "` + $target.data("event").task_id + `","project_id": "` + $target.data("event").project_id + `","last_child": "` + $target.data("event").last_child + `"}'>` + $target.text() + ` [` + $target.data("event").project_id + `] </div>
                 <ul id='interest-menu' class="custome-interest-menu"  task-id="` + $target.data("event").task_id + `">
                     <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
                 </ul>
             </li>`);
+            }
+            else{
+                var $newdiv = $(`<li class="l-last_task">
+                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task"
+                data-event='{ "task_id": "` + $target.data("event").task_id + `","project_id": "` + $target.data("event").project_id + `","last_child": "` + $target.data("event").last_child + `"}'>` + $target.text() + ` [` + $target.data("event").project_id + `] </div>
+                <ul id='interest-menu' class="custome-interest-menu"  task-id="` + $target.data("event").task_id + `">
+                    <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+                </ul>
+            </li>`);
+            }
+
 
             $.ajax({
                 url: "/api/employee/interested_task",
