@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    switch_next_pre_week();
+    // switch_next_pre_week();
     showEmployeeTasks();
-    calendarDay();
+    // calendarDay();
     taskCommonAction();
     dragDropCreateEmployeeTask();
 });

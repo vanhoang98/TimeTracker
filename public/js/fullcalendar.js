@@ -1,4 +1,5 @@
 var calendar;
+
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
     var Draggable = FullCalendar.Draggable;
@@ -7,8 +8,48 @@ document.addEventListener('DOMContentLoaded', function () {
     var overlapArray = [];
     var contextMenuEl = {};
 
-    new Draggable(containerEl, {
-        itemSelector: '.fc-event', revert: true, eventData: function (eventEl) {
+    // new Draggable(containerEl, {
+    //     itemSelector: '.fc-event', eventData: function (eventEl) {
+    //         let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+    //         return {
+    //             title: eventEl.innerText,
+    //             task_id: dataEvent['task_id'],
+    //             project_id: dataEvent['project_id'],
+    //             is_last_child: dataEvent['last_child']
+    //         };
+    //     }
+    // });
+    //
+    // new Draggable(interestedList, {
+    //     itemSelector: '.fc-event', eventData: function (eventEl) {
+    //         let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+    //         return {
+    //             title: eventEl.innerText,
+    //             task_id: dataEvent['task_id'],
+    //             project_id: dataEvent['project_id'],
+    //             is_last_child: dataEvent['last_child']
+    //         };
+    //     }
+    // });
+
+    new FullCalendar.ThirdPartyDraggable(containerEl, {
+        itemSelector: '.fc-event',
+        mirrorSelector: '.ui-draggable-dragging', // the dragging element that dragula renders
+        eventData: function(eventEl) {
+                    let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+                    return {
+                        title: eventEl.innerText,
+                        task_id: dataEvent['task_id'],
+                        project_id: dataEvent['project_id'],
+                        is_last_child: dataEvent['last_child']
+                    };
+        }
+    });
+
+    new FullCalendar.ThirdPartyDraggable(interestedList, {
+        itemSelector: '.fc-event',
+        mirrorSelector: '.ui-draggable-dragging', // the dragging element that dragula renders
+        eventData: function(eventEl) {
             let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
             return {
                 title: eventEl.innerText,
@@ -19,22 +60,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    new Draggable(interestedList, {
-        itemSelector: '.fc-event', revert: true, eventData: function (eventEl) {
-            let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
-            return {
-                title: eventEl.innerText,
-                task_id: dataEvent['task_id'],
-                project_id: dataEvent['project_id'],
-                is_last_child: dataEvent['last_child']
-            };
-        }
-    });
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek', allDaySlot: false, editable: true, droppable: true, locale: 'ja', headerToolbar: {
+        initialView: 'timeGridWeek',
+        allDaySlot: false,
+        editable: true,
+        droppable: true,
+        locale: 'ja',
+        headerToolbar: {
             left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        }, events: getAllEvents, eventOverlap: function (stillEvent, movingEvent) {
+        },
+        events: getAllEvents, eventOverlap: function (stillEvent, movingEvent) {
             if (!overlapArray.some(item => item.id === stillEvent.id)) {
                 overlapArray.push(stillEvent);
             }
@@ -210,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('error create, revert');
             }
         });
-    };calendar.render();
+    }calendar.render();
     myTaskFunction();
 });
 
@@ -278,14 +314,15 @@ $(document).on("click", function (e) {
 
 // Function for list of my tasks
 function myTaskFunction() {
-    $(".interest-drag").draggable({
-        helper: "clone", revert: "invalid", stop: function () {
-            $(this).draggable('option', 'revert', 'invalid');
+    $(".fc-event").draggable({
+        helper: "clone", revert: "false", stop: function () {
+            // $(this).draggable('option', 'revert', 'invalid');
         }
     });
 
     $("#interested-tasks").droppable({
         accept: '.interest-drag', drop: function (event, ui) {
+            console.log('somthing war srong');
             var $target = $(ui.draggable);
             console.log($target.data("event"))
             var taskId = $target.data("event").task_id;
@@ -298,16 +335,17 @@ function myTaskFunction() {
                 <ul id='interest-menu' class="custome-interest-menu"  task-id="` + $target.data("event").task_id + `">
                     <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
                 </ul>
+                $("#interested-tasks").append($newdiv);
             </li>`);
-            }
-            else{
+            } else {
                 var $newdiv = $(`<li class="l-last_task">
                 <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task"
                 data-event='{ "task_id": "` + $target.data("event").task_id + `","project_id": "` + $target.data("event").project_id + `","last_child": "` + $target.data("event").last_child + `"}'>` + $target.text() + ` [` + $target.data("event").project_id + `] </div>
                 <ul id='interest-menu' class="custome-interest-menu"  task-id="` + $target.data("event").task_id + `">
                     <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
                 </ul>
-            </li>`);
+                </li>`);
+                $("#interested-tasks").append($newdiv);
             }
 
 
@@ -320,7 +358,7 @@ function myTaskFunction() {
                 dataType: "json",
                 data: {task_id: taskId, is_last_child: isLastChild == "1" ? 1 : 0},
                 success: function (response) {
-                    $("#interested-tasks").append($newdiv);
+                    // $("#interested-tasks").append($newdiv);
                     subMenuMyTask();
                     console.log(response);
                     console.log("Add interested task successfully!");

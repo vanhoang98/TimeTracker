@@ -770,6 +770,14 @@ select {
 .l-sidebar__header .h-custom-block ul li:not(:first-child) {
   margin-left: 20px;
 }
+
+.l-main__container {
+    /*width: 26%;*/
+    height: calc(100vh - 116px);
+    /*border-right: 4px solid #e8e8ec;*/
+    /*float: right;*/
+}
+
 .l-main__container .datepicker-range ul {
   height: 50px;
   display: flex;
@@ -941,7 +949,7 @@ select {
 .l-sidebar__item .item-tree > li > ul > li > ul > li > div.active-arrow:after {
   transform: translateY(-50%) rotate(90deg);
 }
-.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li {  
+.l-sidebar__item .item-tree > li > ul > li > ul > li > ul > li {
   text-indent: 21%;
   padding-right: 1%;
   margin-bottom: 7px;

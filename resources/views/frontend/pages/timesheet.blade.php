@@ -17,11 +17,6 @@
 
             <div class="h-custom-block">
                 <ul>
-                    <li class="icon-cmn">
-                        <a href="">
-                            <img src="{{ asset('images/icon-list.png') }}" alt="">
-                        </a>
-                    </li>
                     <li class="manual-mode icon-cmn">
                         <a href="">
                             <img src="{{ asset('images/icon-list.png') }}" alt="">
@@ -111,8 +106,8 @@
             </li>
         </ul>
     </div>
-    <div>
-        <div id='calendar'></div>
+    <div class="l-main__container">
+        <div id='calendar' class="l-main__container"></div>
     </div>
     <ul id='contextMenu' class="custom-menu" role="menu">
         <li class="delete-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
