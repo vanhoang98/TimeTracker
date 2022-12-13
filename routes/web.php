@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
-Route::get('/timesheet', 'TimeSheetController@index')->name('timesheet')->middleware('employee');
+//Route::get('/timesheet', 'TimeSheetController@index')->name('timesheet')->middleware('employee');
+Route::get('/timesheet', 'TimeSheetController@index')->name('timesheet');

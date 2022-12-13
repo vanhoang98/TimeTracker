@@ -40,15 +40,23 @@
                     @foreach($interested_tasks as $task)
                         @if($task->pivot->is_last_child == 0)
                             <li class="l-sub_task">
-                                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}} [{{$task->project_id}}] </div>
-                                <ul id='interest-menu' class="custome-interest-menu"  task-id="{{ $task->id }}">
-                                        <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+                                <div
+                                    class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task"
+                                    data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}}
+                                    [{{$task->project_id}}]
+                                </div>
+                                <ul id='interest-menu' class="custome-interest-menu" task-id="{{ $task->id }}">
+                                    <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
                                 </ul>
                             </li>
                         @else
                             <li class="l-last_task">
-                                <div class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task" data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}} [{{$task->project_id}}] </div>
-                                <ul id='interest-menu' class="custome-interest-menu"  task-id="{{ $task->id }}">
+                                <div
+                                    class="text-ellipsis fc-event draggable ui-draggable ui-draggable-handle interested-task"
+                                    data-event='{ "task_id": "{{ $task->id }}", "project_id": "{{ $task->project_id }}", "last_child": "{{ $task->pivot->is_last_child }}"}'>{{$task->name}}
+                                    [{{$task->project_id}}]
+                                </div>
+                                <ul id='interest-menu' class="custome-interest-menu" task-id="{{ $task->id }}">
                                     <li class="delete-interest-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
                                 </ul>
                             </li>
@@ -91,20 +99,20 @@
 
                     <ul class="item-tree" id='external-events'>
                         @foreach($task_tree as $project)
-                        <li>
-                            <div class="item-dropdown" id="{{$project->id}}">
-                                <img src="{{ asset('images/icon-project.png') }}" style="width: 21px;
+                            <li>
+                                <div class="item-dropdown" id="{{$project->id}}">
+                                    <img src="{{ asset('images/icon-project.png') }}" style="width: 21px;
                                 padding-bottom: 3px;" alt="">
-                                <span>{{$project->name}}</span>
-                            </div>
-                            <ul style="display : none">
-                                @foreach($project->tasks as $childTask)
-                                    <li>
-                                        @include('frontend.pages.child_task', ['child_task' => $childTask])
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
+                                    <span>{{$project->name}}</span>
+                                </div>
+                                <ul style="display : none">
+                                    @foreach($project->tasks as $childTask)
+                                        <li>
+                                            @include('frontend.pages._task', ['child_task' => $childTask])
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
@@ -115,7 +123,8 @@
         <div id='calendar'></div>
     </div>
     <ul id='contextMenu' class="custom-menu" role="menu">
-        <li class="delete-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li><hr>
+        <li class="delete-task"><i class="icon-itemMenu fa fa-trash"></i>削除</li>
+        <hr>
         <li><i class="icon-itemMenu fa fa-square"></i>工程分類<i class="arrow-right fa fa-chevron-right"></i>
             <ul class="process-subMenu">
                 <li><a class="dropdown-item" href="#">要求分析</a></li>
@@ -130,7 +139,8 @@
                 <li><a class="dropdown-item" href="#">修正</a></li>
                 <li><a class="dropdown-item" href="#">管理</a></li>
             </ul>
-        </li><hr>
+        </li>
+        <hr>
         <li><i class="icon-itemMenu fa fa-comment-o"></i>詳細表示</li>
     </ul>
 </div>

@@ -7,34 +7,37 @@ document.addEventListener('DOMContentLoaded', function () {
     var overlapArray = [];
     var contextMenuEl = {};
 
-    new Draggable(containerEl, {
-        itemSelector: '.fc-event', revert: true, eventData: function (eventEl) {
-            let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
-            return {
-                title: eventEl.innerText,
-                task_id: dataEvent['task_id'],
-                project_id: dataEvent['project_id'],
-                is_last_child: dataEvent['last_child']
-            };
-        }
-    });
-
-    new Draggable(interestedList, {
-        itemSelector: '.fc-event', revert: true, eventData: function (eventEl) {
-            let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
-            return {
-                title: eventEl.innerText,
-                task_id: dataEvent['task_id'],
-                project_id: dataEvent['project_id'],
-                is_last_child: dataEvent['last_child']
-            };
-        }
-    });
+    // new Draggable(containerEl, {
+    //     itemSelector: '.fc-event', revert: true, eventData: function (eventEl) {
+    //         let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+    //         return {
+    //             title: eventEl.innerText,
+    //             task_id: dataEvent['task_id'],
+    //             project_id: dataEvent['project_id'],
+    //             is_last_child: dataEvent['last_child']
+    //         };
+    //     }
+    // });
+    //
+    // new Draggable(interestedList, {
+    //     itemSelector: '.fc-event', revert: true, eventData: function (eventEl) {
+    //         let dataEvent = JSON.parse(eventEl.getAttribute("data-event"));
+    //         return {
+    //             title: eventEl.innerText,
+    //             task_id: dataEvent['task_id'],
+    //             project_id: dataEvent['project_id'],
+    //             is_last_child: dataEvent['last_child']
+    //         };
+    //     }
+    // });
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek', allDaySlot: false, editable: true, droppable: true, locale: 'ja', headerToolbar: {
             left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        }, events: getAllEvents, eventOverlap: function (stillEvent, movingEvent) {
+        },
+        themeSystem: 'bootstrap',
+        // height: auto,
+        events: getAllEvents, eventOverlap: function (stillEvent, movingEvent) {
             if (!overlapArray.some(item => item.id === stillEvent.id)) {
                 overlapArray.push(stillEvent);
             }

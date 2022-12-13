@@ -13,19 +13,20 @@ class TimeSheetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     public function index()
     {
         $taskTree = $this->getTaskTree();
         $interestedTask = $this->getInterestedList();
-        return view('frontend.layouts.master', compact('taskTree', 'interestedTask'));
+//        return view('frontend.layouts.master', compact('taskTree', 'interestedTask'));
+        return view('user/worksheet',compact('taskTree', 'interestedTask'));
     }
 
     public function getTaskTree()
     {
-        $projects = Employee::find(Auth::id())->projects;
+        $projects = Employee::find(1)->projects;
         $projects->map(function ($project){
             $project['tasks'] = $project->getTaskTree();
         });
